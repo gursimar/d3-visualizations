@@ -24,22 +24,36 @@ body {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
+	function transformData(data){
+		var tData = []
+		for (i=0; i< data.x.length; i++){
+			tData[i] = {
+				x:data.x[i],
+				y:data.y[i]
+			}
+		}
+		return tData
+
+	}
+
 	var simar = [0.1, 0.2, 0.3, 0.4];
 	var data = {
-		dim1:[0.1,0.2,0.3,0.4],
-		dim2:[0.2,0.3,0.5,0.6]
+		x:[0.1,0.2,0.3,0.4],
+		y:[0.2,0.3,0.5,0.6]
 	};
+	console.log(transformData(data));
+	tData = transformData(data);
 
 	var margin = {top:20, right:20, bottom:30, left:40}
 		width = 960 - margin.left - margin.right
 		height = 500 - margin.top - margin.bottom;
 
 	var x = d3.scale.linear()
-		.domain([0, d3.max(simar)])
+		.domain([0, d3.max(data.x)])
 		.range([0, width]);
 
 	var y = d3.scale.linear()
-		.domain([0, d3.max(simar)])
+		.domain([0, d3.max(data.y)])
 		.range([height, 0]);
 
 	var color = d3.scale.category10();;
@@ -87,12 +101,12 @@ body {
 			.text("y axis");
 
 	svg.selectAll(".dot")
-		.data(simar)
+		.data(tData)
 		.enter().append("circle")
 		.attr("class","dot")
 		.attr("r", 3.5)
-		.attr("cx", function(d) {console.log(d);return x(d);})
-		.attr("cy", function(d) {console.log(d);return y(d);});
+		.attr("cx", function(d) {console.log(d);return x(d.x);})
+		.attr("cy", function(d) {console.log(d);return y(d.y);});
 		//.style("fill", function(d) { return color("simar"); })
 
 
