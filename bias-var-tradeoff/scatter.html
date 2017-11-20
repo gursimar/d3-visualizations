@@ -38,17 +38,17 @@ body {
 		return result
 	}
 
-	function generateData(){
+	function generateData(w,b,nf){
 		xData = linspace(0,20,0.1)
+		noise = Array.apply(null, Array(xData.length))
+			.map(function() {return Math.random()*nf;})
 		const xDataMat = math.matrix(xData);
-		const yDataMat = math.multiply(xDataMat,5)
-		console.log(xDataMat)
-		console.log(yDataMat)
+		const yDataMat = math.add(math.multiply(xDataMat,w),b)	//wx+b
+		yDataMatNoise = math.add(yDataMat, noise)
 
-		noise = Math.random()
 		result = {
 			x:xDataMat.valueOf(),
-			y:yDataMat.valueOf()
+			y:yDataMatNoise.valueOf()
 		}
 		return result
 	}
@@ -70,7 +70,10 @@ body {
 		x:[0.1,0.2,0.3,0.4],
 		y:[0.2,0.3,0.5,0.6]
 	};
-	data = generateData()
+	w = 5 // slope
+	b = 5 // intercept term
+	nf = 4 // noise factor
+	data = generateData(w,b,nf)
 
 	//console.log(transformData(data));
 	tData = transformData(data);
