@@ -22,7 +22,36 @@ body {
 
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="node_modules/mathjs/dist/math.js"></script>
+<script src="node_modules/regression/dist/regression.js"></script>
+
+
 <script>
+
+	// some utility functions
+	function linspace(a,b,d){
+		var result = []
+		var no = (b-a)/d + 1;
+		for (i=0;i<no;i++){
+			result[i] = a + i*d;
+		}
+		return result
+	}
+
+	function generateData(){
+		xData = linspace(0,20,0.1)
+		const xDataMat = math.matrix(xData);
+		const yDataMat = math.multiply(xDataMat,5)
+		console.log(xDataMat)
+		console.log(yDataMat)
+
+		noise = Math.random()
+		result = {
+			x:xDataMat.valueOf(),
+			y:yDataMat.valueOf()
+		}
+		return result
+	}
 
 	function transformData(data){
 		var tData = []
@@ -41,7 +70,9 @@ body {
 		x:[0.1,0.2,0.3,0.4],
 		y:[0.2,0.3,0.5,0.6]
 	};
-	console.log(transformData(data));
+	data = generateData()
+
+	//console.log(transformData(data));
 	tData = transformData(data);
 
 	var margin = {top:20, right:20, bottom:30, left:40}
@@ -105,8 +136,8 @@ body {
 		.enter().append("circle")
 		.attr("class","dot")
 		.attr("r", 3.5)
-		.attr("cx", function(d) {console.log(d);return x(d.x);})
-		.attr("cy", function(d) {console.log(d);return y(d.y);});
+		.attr("cx", function(d) {return x(d.x);})
+		.attr("cy", function(d) {return y(d.y);});
 		//.style("fill", function(d) { return color("simar"); })
 
 
