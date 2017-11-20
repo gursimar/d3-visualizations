@@ -23,7 +23,8 @@ body {
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="node_modules/mathjs/dist/math.js"></script>
-<script src="node_modules/regression/dist/regression.js"></script>
+<!--<script src="node_modules/regression/dist/regression.js"></script>-->
+<script src="node_modules/js-regression/build/jsregression.min.js"></script>
 
 
 <script>
@@ -38,21 +39,6 @@ body {
 		return result
 	}
 
-	function generateData(w,b,nf){
-		xData = linspace(0,20,0.1)
-		noise = Array.apply(null, Array(xData.length))
-			.map(function() {return Math.random()*nf;})
-		const xDataMat = math.matrix(xData);
-		const yDataMat = math.add(math.multiply(xDataMat,w),b)	//wx+b
-		yDataMatNoise = math.add(yDataMat, noise)
-
-		result = {
-			x:xDataMat.valueOf(),
-			y:yDataMatNoise.valueOf()
-		}
-		return result
-	}
-
 	function transformData(data){
 		var tData = []
 		for (i=0; i< data.x.length; i++){
@@ -62,18 +48,53 @@ body {
 			}
 		}
 		return tData
+	}	
+
+	// data generation functions
+	function polyBasis(x,n){
+		var resultMat = math.ones(x.length,1)
+		for (i=1;i<=n;i++){
+			nthBasis = math.matrix(x).map(function(d){return Math.pow(d,i)})
+			math.reshape(nthBasis,[x.length,1])
+			resultMat = math.concat(resultMat, nthBasis)
+		}
+		return resultMat;
 
 	}
 
-	var simar = [0.1, 0.2, 0.3, 0.4];
+	function generateData(x,w,nf){
+		noise = math.ones(x.length).map(function(d){return Math.random()*nf})
+		
+		var xDataMat = polyBasis(x,w.length-1)
+
+		//const yDataMat = math.add(math.multiply(xDataMat,w),b)	//wx+b
+		const yDataMat = math.multiply(xDataMat,w)	//wx+b
+		yDataMatNoise = math.add(yDataMat, noise)
+
+		result = {
+			x:x,
+			y:yDataMatNoise.valueOf()
+		}
+		return result
+	}
+
+	function generateRandomData(){
+
+	}
+
+	//
+
+
+
+	var simar = [0.1,0.2,0.3,0.4];
 	var data = {
 		x:[0.1,0.2,0.3,0.4],
 		y:[0.2,0.3,0.5,0.6]
 	};
-	w = 5 // slope
-	b = 5 // intercept term
-	nf = 4 // noise factor
-	data = generateData(w,b,nf)
+	w = [1,2,2] // slope
+	x = linspace(0,20,0.1)
+	nf = 100 // noise factor
+	data = generateData(x,w,nf)
 
 	//console.log(transformData(data));
 	tData = transformData(data);
