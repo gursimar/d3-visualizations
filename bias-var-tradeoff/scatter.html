@@ -24,10 +24,63 @@ body {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="node_modules/mathjs/dist/math.js"></script>
 <!--<script src="node_modules/regression/dist/regression.js"></script>-->
-<script src="node_modules/js-regression/build/jsregression.min.js"></script>
+<script src="node_modules/js-regression/src/jsregression.js"></script>
 
 
 <script>
+    function gradientDescent (xDataMat, yDataMat) {
+        var N = data.length, X = [], Y = [];
+        this.dim = data[0].length;
+
+    
+        for (var i=0; i < N; ++i) {
+            var row = data[i];
+            var x_i = [];
+            var y_i = row[row.length-1];
+            x_i.push(1.0);
+            for(var j=0; j < row.length-1; ++j) {
+                x_i.push(row[j]);
+            }
+            Y.push(y_i);
+            X.push(x_i);
+        }
+
+        console.log(X)
+        console.log(Y)
+        
+        this.theta = [];
+        
+        for (var d = 0; d < this.dim; ++d) {
+            this.theta.push(Math.random());
+        }
+        
+        for (var k = 0; k < this.iterations; ++k) {
+            var Vx = this.grad(X, Y, this.theta);
+            
+            for(var d = 0; d < this.dim; ++d) {
+                this.theta[d] = this.theta[d] - this.alpha * Vx[d];
+            }
+            
+            if(this.trace) {
+                console.log('cost at iteration ' + k + ': ' + this.cost(X, Y, this.theta));
+                console.log(this.theta)
+            }
+        }
+        
+        return {
+            theta: this.theta,
+            dim: this.dim,
+            cost: this.cost(X, Y, this.theta),
+            config: {
+                alpha: this.alpha,
+                lambda: this.lambda,
+                iterations: this.iterations 
+            }
+        };
+    }
+
+    function leastSquaresGradient(X,y,theta){
+    }
 
 	// some utility functions
 	function linspace(a,b,d){
@@ -48,7 +101,29 @@ body {
 			}
 		}
 		return tData
-	}	
+	}
+
+	function transformDataReg(data,n){
+		length = data.x.length
+		result = []
+		//result = {x:[],xy:[]}
+
+		// not using polybasis intentionally
+		for (i=0;i<length;i++){
+			x = data.x[i]
+			y = data.y[i]
+			//basis = [1]
+			basis = []
+			for (j=1;j<=n;j++){
+				basis.push(Math.pow(x,j))
+			}
+			//result.x.push(basis)
+			basis.push(y)
+			//result.xy.push(basis)
+			result.push(basis)
+		}
+		return result
+	}
 
 	// data generation functions
 	function polyBasis(x,n){
@@ -59,7 +134,6 @@ body {
 			resultMat = math.concat(resultMat, nthBasis)
 		}
 		return resultMat;
-
 	}
 
 	function generateData(x,w,nf){
@@ -82,22 +156,69 @@ body {
 
 	}
 
-	//
+	// regression function
+	function fitData(data){
+		var regressor = new jsregression.LinearRegression({
+			alpha: 0.001,
+			iterations: 1000,
+			lambda: 0.0,
+			trace: true
+		});
+		var model = regressor.fit(data)
+		console.log(model)
+		//x_data = data.map()
+		yhat = regressor.transform(data)
+		result = {
+			model:model,
+			yhat:yhat
+		}
+		return result
+	}
+
+	function fitDataClosedForm(data, model_degree){
+		x = data.x
+		y = data.y
+		xDataMat = polyBasis(x,model_degree)
+		yDataMat = math.matrix(y)
+		math.reshape(yDataMat,[y.length,1])
+		//console.log(xDataMat)
+		//console.log(yDataMat)
+
+		var tr = math.transpose(xDataMat);
+		var tr_X = math.multiply(tr, xDataMat);
+		var tr_y = math.multiply(tr, yDataMat);
+		var theta = math.multiply( math.inv(tr_X), tr_y );
+		yhat = math.multiply(xDataMat,theta)
+		//console.log	(yhat)
+		//console.log	(theta)
+		result = {
+			model:theta.valueOf(),
+			yhat:yhat.valueOf()
+		}
+		return result
+
+    }	
 
 
 
+	// ================== MAIN CODE ==================
 	var simar = [0.1,0.2,0.3,0.4];
 	var data = {
 		x:[0.1,0.2,0.3,0.4],
 		y:[0.2,0.3,0.5,0.6]
 	};
-	w = [1,2,2] // slope
+	w = [5,3,2] // slope
 	x = linspace(0,20,0.1)
 	nf = 100 // noise factor
-	data = generateData(x,w,nf)
+	model_degree = 2
+	data = generateData(x,w,nf) // gives data as array of dict{x,y}
+	//data_r = transformDataReg(data, model_degree)	// gives data as arrays of array [x,y]
+	//rResult = fitData(data_r)
+	rResult = fitDataClosedForm(data, model_degree)
 
 	//console.log(transformData(data));
 	tData = transformData(data);
+	rData = transformData({x:data.x, y:rResult.yhat});
 
 	var margin = {top:20, right:20, bottom:30, left:40}
 		width = 960 - margin.left - margin.right
@@ -155,14 +276,25 @@ body {
 			.style("text-anchor", "end")
 			.text("y axis");
 
-	svg.selectAll(".dot")
-		.data(tData)
-		.enter().append("circle")
-		.attr("class","dot")
-		.attr("r", 3.5)
-		.attr("cx", function(d) {return x(d.x);})
-		.attr("cy", function(d) {return y(d.y);});
-		//.style("fill", function(d) { return color("simar"); })
+	svg.append("g")
+		.selectAll(".dot")
+			.data(tData)
+			.enter().append("circle")
+			.attr("class","dot")
+			.attr("r", 3.5)
+			.attr("cx", function(d) {return x(d.x);})
+			.attr("cy", function(d) {return y(d.y);})
+			.style("fill", function(d) { return color("simar"); });
+
+	svg.append("g")
+		.selectAll(".dot")
+			.data(rData)
+			.enter().append("circle")
+			.attr("class","dot")
+			.attr("r", 3.5)
+			.attr("cx", function(d) {return x(d.x);})
+			.attr("cy", function(d) {return y(d.y);})
+			.style("fill", function(d) { return color("pomp"); });
 
 
 
