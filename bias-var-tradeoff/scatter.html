@@ -23,14 +23,6 @@ body {
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css">
 
-
-<body>
-    <div class="container" ng-app="demo" ng-controller="demoController">
-
-	</div>
-</body>
-
-
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="node_modules/mathjs/dist/math.js"></script>
@@ -41,6 +33,43 @@ body {
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 
 
+
+<body>
+    <div class="container" ng-app="demo" ng-controller="demoController">
+    	simar
+		<slider ng-model="sliders.sliderValue" min="testOptions.min" step="testOptions.step" max="testOptions.max" value="testOptions.value"></slider>
+        <label for="sliderId">Slider Id:</label>
+        <input id="sliderId" type="text" ng-model="testOptions.sliderId">
+
+	</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>Column 1</h3>
+		<button type="button" class="btn">Basic</button>
+		<button type="button" class="btn btn-default">Default</button>
+		<button type="button" class="btn btn-primary">Primary</button>
+		<button type="button" class="btn btn-success">Success</button>
+		<button type="button" class="btn btn-info">Info</button>
+		<button type="button" class="btn btn-warning">Warning</button>
+		<button type="button" class="btn btn-danger">Danger</button>
+		<button type="button" class="btn btn-link">Link</button>    </div>
+    <div class="col-sm-4">
+      <h3>Column 2</h3>
+      <p>Lorem ipsum dolor..</p>
+      <p>Ut enim ad..</p>
+    </div>
+    <div class="col-sm-4">
+      <h3>Column 3</h3> 
+      <p>Lorem ipsum dolor..</p>
+      <p>Ut enim ad..</p>
+    </div>
+  </div>
+</div>	
+
+
+
+</body>
 
 <script>
 	var app = angular.module('demo', []);
