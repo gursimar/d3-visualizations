@@ -19,15 +19,36 @@ body {
 }
 
 </style>
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css">
+
 
 <body>
+    <div class="container" ng-app="demo" ng-controller="demoController">
+
+	</div>
+</body>
+
+
+<script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="node_modules/mathjs/dist/math.js"></script>
-<!--<script src="node_modules/regression/dist/regression.js"></script>-->
 <script src="node_modules/js-regression/src/jsregression.js"></script>
+<!--<script src="node_modules/regression/dist/regression.js"></script>-->
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
 
 
 <script>
+	var app = angular.module('demo', []);
+	var controller = function($scope){
+	};
+	
+	app.controller('demoController', ['$scope', controller]);
+
     function gradientDescent (xDataMat, yDataMat) {
         var N = data.length, X = [], Y = [];
         this.dim = data[0].length;
@@ -314,12 +335,9 @@ todos
 -- fitting polynomial
 - how much graph to visualize?
 -- may be add sliders
-
-
-
+- integrate bootstrap - https://getbootstrap.com/docs/3.3/components/#responsive-embed
 */
 
 
 
 </script>
-</body>
