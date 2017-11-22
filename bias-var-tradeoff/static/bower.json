@@ -1,0 +1,30 @@
+{
+  "name": "angular-flask-boilerplate",
+  "homepage": "https://github.com/gursimar/angular-flask-boilerplate",
+  "description": "Boilerplate code to start a web application using angular-js and python flask as backend.",
+  "main": "index.html",
+  "keywords": [
+    "boilerplate"
+  ],
+  "authors": [
+    "simar"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-router": "^0.2.18",
+    "angular": "^1.5.4",
+    "angular-ui": "^0.4.0",
+    "angular-route": "^1.5.3",
+    "bootstrap": "^3.3.6",
+    "d3": "^4.12.0",
+    "mathjs": "^3.17.0",
+    "angular-ui-slider": "^0.4.0"
+  }
+}

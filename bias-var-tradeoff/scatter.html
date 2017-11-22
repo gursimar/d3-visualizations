@@ -65,7 +65,10 @@ body {
       <p>Ut enim ad..</p>
     </div>
   </div>
-</div>	
+</div>
+<div id = "simar">
+    Hurrr
+</div>
 
 
 
@@ -245,10 +248,10 @@ body {
 		x:[0.1,0.2,0.3,0.4],
 		y:[0.2,0.3,0.5,0.6]
 	};
-	w = [100,3,2] // slope
+	w = [100,3,5] // slope
 	x = linspace(0,20,0.1)
-	nf = 100 // noise factor
-	model_degree = 2
+	nf = 1000 // noise factor
+	model_degree = 1
 	data = generateData(x,w,nf) // gives data as array of dict{x,y}
 	//data_r = transformDataReg(data, model_degree)	// gives data as arrays of array [x,y]
 	//rResult = fitData(data_r)
@@ -280,7 +283,7 @@ body {
 		.scale(y)
 		.orient("left");
 
-	var svg = d3.select("body").append("svg")
+	var svg = d3.select("#simar").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
