@@ -4,8 +4,10 @@
 
 var app = angular.module("sampleApp", [
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.slider'
 ]);
+
 app.controller("AppCtrl", function($scope) {
     $scope.products = ["Milk", "Bread", "Cheese"];
 });
@@ -28,6 +30,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             controller: "State2Ctrl"
         })
 })
+
 
 
 

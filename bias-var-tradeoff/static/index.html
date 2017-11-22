@@ -11,7 +11,12 @@
         <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
         -->
 
-        <script src="static/bower_components/angular/angular.js"></script>
+        <!--DOES NOT WORK for some reasonscript src="static/bower_components/angular/angular.js"></script-->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+
         <script src="static/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="static/bower_components/angular-ui/bower_components/angular-bootstrap/ui-bootstrap.js"></script>
         <script src="static/js/app.js"></script>
@@ -20,8 +25,11 @@
         <script src="static/js/ml-functions.js"></script>
         <script src="http://d3js.org/d3.v3.min.js"></script> <!-- bower component one not working for some reason-->
         <script src="static/bower_components/mathjs/dist/math.js"></script>
+        <script src="static/bower_components/angular-ui-slider/src/slider.js"></script>
 
         <link rel="stylesheet" href="static/bower_components/bootstrap/dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="static/bower_components/jquery-ui/themes/base/jquery-ui.css"/>
+        <link rel="stylesheet" href="static/bower_components/jquery-ui/themes/base/slider.css"/>
         <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
         .navbar {
@@ -69,6 +77,16 @@
         .dot {
           stroke: #000;
           fill: steelblue;
+        }
+
+        .sliderExample {
+            padding: 2em;
+            border: 2px solid #CCC;
+            margin: 2em;
+        }
+
+        .sliders {
+            margin: 1em;
         }
 
         </style>
