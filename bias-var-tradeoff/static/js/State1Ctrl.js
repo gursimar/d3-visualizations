@@ -151,7 +151,9 @@ app.controller("State1Ctrl", function($scope,  $log) {
     $scope.displayLegend()
   }
 
-	x = linspace(0,20,0.1)
+
+
+	x = linspace(0,100,0.1)
     $scope.w = [100,3,5]
 	$scope.nf = 1000 // noise factor
 	$scope.model_degree = 1

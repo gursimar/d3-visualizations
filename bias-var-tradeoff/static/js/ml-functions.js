@@ -106,8 +106,8 @@
 		var xDataMat = polyBasis(x,w.length-1)
 
 		//const yDataMat = math.add(math.multiply(xDataMat,w),b)	//wx+b
-		const yDataMat = math.multiply(xDataMat,w)	//wx+b
-		yDataMatNoise = math.add(yDataMat, noise)
+		var yDataMat = math.multiply(xDataMat,w)	//wx+b
+		var yDataMatNoise = math.add(yDataMat, noise)
 
 		result = {
 			x:x,
@@ -160,4 +160,12 @@
 			yhat:yhat.valueOf()
 		}
 		return result
+    }
+
+    function compute_RMSE(y_orig, y_hat){
+	    error = 0
+	    for(i=0;i<y_orig.length;i++){
+	        error = error + Math.pow((y_orig[i] - y_hat[i]),2)
+        }
+        return Math.sqrt(error)/y_orig.length
     }

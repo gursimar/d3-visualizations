@@ -1,7 +1,7 @@
 /**
  * Created by Gursimran on 16-Apr-16.
  */
-app.controller("State2Ctrl", function($scope) {
+app.controller("State3Ctrl", function($scope) {
     $scope.slider = {
         'options': {
             start: function(event, ui) {

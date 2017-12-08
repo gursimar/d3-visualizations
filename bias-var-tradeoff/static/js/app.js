@@ -29,6 +29,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: "static/templates/state2.html",
             controller: "State2Ctrl"
         })
+        .state('state3', {
+            url: "/state3",
+            templateUrl: "static/templates/state3.html",
+            controller: "State3Ctrl"
+        })
 })
 
 
