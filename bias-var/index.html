@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+
+<style>
+body {
+  font: 12px sans-serif;
+}
+
+.jumbotron
+{   
+	padding-top: 1px;
+	padding-bottom:5px;
+	background-color:#eee;
+	//background-color:red;
+	//height:150px;
+ }
+
+ .sidebar
+ {
+ 	height:100%;
+	padding-top: 200px;
+	text-align: center;
+  	background-color:#eee; 	
+ }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+  fill: steelblue;
+}
+
+</style>
+
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="ml-functions.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="node_modules/mathjs/dist/math.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="node_modules/js-regression/src/jsregression.js"></script> <!-- this is not needed-->
+
+
+<body>
+<div class="jumbotron text-center">
+  <h2>Bias variance tradeoff playground</h2>
+  <p>Choose a function, try different values of p and see how you do on generalization error!</p> 
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-2">
+    	<div>
+	    	<h4>DATA</h4>
+	    	<p>What complexity of data you want to use</p>
+			<div class="btn-group">
+			  <button type="button" id="data_1" class="btn btn-default">Linear</button>
+			  <button type="button" id="data_2" class="btn btn-default">Cmplx</button>
+			  <button type="button" id="data_3" class="btn btn-default">Cmplx</button>
+			</div>
+    	</div>
+    	<br><br><br>
+    	<div>
+	    	<h4>DEGREE</h4>
+	    	<p>What polynomial basis you want to use</p>
+			<div class="btn-group">
+			  <button type="button" class="btn btn-default">1</button>
+			  <button type="button" class="btn btn-default">2</button>
+			  <button type="button" class="btn btn-default">3</button>
+			  <button type="button" class="btn btn-default">4</button>
+			  <button type="button" class="btn btn-default">5</button>
+			  <button type="button" class="btn btn-default">6</button>
+			</div>
+    	</div>
+
+    </div>
+    <div class="col-sm-5">
+    	<div id ="simar">
+    	</div>
+    </div>
+    <div class="col-sm-5">
+    </div>
+  </div>
+</div>
+
+</body>
+
+<script>
+	var simar = [0.1,0.2,0.3,0.4];
+	var data = {
+		x:[0.1,0.2,0.3,0.4],
+		y:[0.2,0.3,0.5,0.6]
+	};
+	w = [100,3,5] // slope
+	x = linspace(0,20,0.1)
+	nf = 1000 // noise factor
+	model_degree = 1
+	data = generateData(x,w,nf) // gives data as array of dict{x,y}
+	tData = transformData(data);
+	//data_r = transformDataReg(data, model_degree)	// gives data as arrays of array [x,y]
+	//rResult = fitData(data_r)
+	rResult = fitDataClosedForm(data, model_degree)
+
+	//console.log(transformData(data));
+	rData = transformData({x:data.x, y:rResult.yhat});
+
+
+	// Setup d3
+	WIDTH = 560
+	HEIGHT = 350
+	var margin = {top:20, right:20, bottom:30, left:50}
+		width = WIDTH - margin.left - margin.right
+		height = HEIGHT - margin.top - margin.bottom;
+
+	var scale_x = d3.scale.linear()
+		.domain([0, d3.max(data.x)])
+		.range([0, width]);
+
+	var scale_y = d3.scale.linear()
+		.domain([0, d3.max(data.y)])
+		.range([height, 0]);
+
+	var color = d3.scale.category10();;
+
+	var xAxis = d3.svg.axis()
+		.scale(scale_x)
+		.orient("bottom");
+
+	var yAxis = d3.svg.axis()
+		.scale(scale_y)
+		.orient("left");
+
+	var svg = d3.select("#simar").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	
+	//x.domain(d3.extent(data, function(d) { return d.dim1; })).nice();
+  	//y.domain(d3.extent(data, function(d) { return d.dim2; })).nice();
+
+	//x.domain(d3.extent(data, function(d) { return d.dim1; })).nice();
+  	//y.domain(d3.extent(data, function(d) { return d.dim2; })).nice();
+
+	svg.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxis)
+		.append("text")
+			.attr("class","label")
+			.attr("x", width)
+			.attr("y", -6)
+			.style("text-anchor", "end")
+			.text("x axis");
+
+	svg.append("g")
+		.attr("class", "y axis")
+		.call(yAxis)
+		.append("text")
+			.attr("class","label")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 6)
+			.attr("dy", ".71em")
+			.style("text-anchor", "end")
+			.text("y axis");
+
+	svg.append("g")
+		.selectAll(".dot")
+			.data(tData)
+			.enter().append("circle")
+			.attr("class","dot")
+			.attr("r", 3.5)
+			.attr("cx", function(d) {return scale_x(d.x);})
+			.attr("cy", function(d) {return scale_y(d.y);})
+			.style("fill", function(d) { return color("Data Points"); });
+
+	svg.append("g")
+		.selectAll(".dot")
+			.data(rData)
+			.enter().append("circle")
+			.attr("class","dot")
+			.attr("r", 3.5)
+			.attr("cx", function(d) {return scale_x(d.x);})
+			.attr("cy", function(d) {return scale_y(d.y);})
+			.style("fill", function(d) { return color("Regression line"); });
+
+	var legend = svg.selectAll(".legend")
+		.data(color.domain())
+	.enter().append("g")
+		.attr("class","legend")
+		.attr("transform",function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", 0 + 60)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  legend.append("text")
+      .attr("x", 0 + 60+ 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "start")
+      .text(function(d) { return d; });	
+	
+// DRAWING FUNCTIONS
+function drawData(data){
+	svg.append("g")
+		.selectAll(".dot")
+			.data(tData)
+			.enter().append("circle")
+			.attr("class","dot")
+			.attr("r", 3.5)
+			.attr("cx", function(d) {return scale_x(d.x);})
+			.attr("cy", function(d) {return scale_y(d.y);})
+			.style("fill", function(d) { return color("Data Points"); });	
+}
+
+
+// EVENT HANDLING
+$( "#data_1" ).click(function() {
+	w = [1,6,8, 5]
+	x = linspace(0,20,0.1)
+	nf = 1000
+	model_degree = 1
+	data = generateData(x,w,nf)
+	tData = transformData(data);
+});
+
+$( "#data_2" ).click(function() {
+	w = [-100,-3,5,-8]
+	x = linspace(0,20,0.1)
+	nf = 1000
+	model_degree = 1
+	data = generateData(x,w,nf)
+	tData = transformData(data);
+});
+
+$( "#data_3" ).click(function() {
+	w = [5,0,0]
+	x = linspace(0,20,0.1)
+	nf = 1000
+	model_degree = 1
+	data = generateData(x,w,nf)
+	tData = transformData(data);
+});
+
+/*
+todos
+- Add equation of line in legend
+- integrate quick angular
+- add slides
+-- generating data degree
+-- noise
+-- fitting polynomial
+- how much graph to visualize?
+-- may be add sliders
+- integrate bootstrap - https://getbootstrap.com/docs/3.3/components/#responsive-embed
+*/
+
+
+
+</script>
