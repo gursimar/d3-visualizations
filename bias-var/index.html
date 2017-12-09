@@ -3,54 +3,21 @@
 
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="styles.css">
 
-<style>
-body {
-  font: 12px sans-serif;
-}
-
-.jumbotron
-{   
-	padding-top: 1px;
-	padding-bottom:5px;
-	background-color:#eee;
-	//background-color:red;
-	//height:150px;
- }
-
- .sidebar
- {
- 	height:100%;
-	padding-top: 200px;
-	text-align: center;
-  	background-color:#eee; 	
- }
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.dot {
-  stroke: #000;
-  fill: steelblue;
-}
-
-</style>
 
 <script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="ml-functions.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="node_modules/mathjs/dist/math.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="node_modules/js-regression/src/jsregression.js"></script> <!-- this is not needed-->
 
+<script src="ml-functions.js"></script>
+<script src="box.js"></script>
 
 <body>
 <div class="jumbotron text-center">
-  <h2>Bias variance tradeoff playground</h2>
+  <h2>Polynomial regression<font size="3">(<a href="https://en.wikipedia.org/wiki/Polynomial_regression">?</a>)</font> bias-variance tradeoff<font size="3">(<a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">?</a>)</font> playground</h2>
   <p>Choose a function, try different values of p and see how you do on generalization error!</p> 
 </div>
 <div class="container-fluid">
@@ -81,10 +48,12 @@ body {
 
     </div>
     <div class="col-sm-5">
-    	<div id ="simar">
+    	<div id ="plot-1">
     	</div>
     </div>
     <div class="col-sm-5">
+    	<div id ="plot-2">
+    	</div>
     </div>
   </div>
 </div>
@@ -136,7 +105,7 @@ body {
 		.scale(scale_y)
 		.orient("left");
 
-	var svg = d3.select("#simar").append("svg")
+	var svg = d3.select("#plot-1").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
@@ -170,12 +139,66 @@ body {
 			.style("text-anchor", "end")
 			.text("y axis");
 
-	var svg_data = svg.append("g")
-	var svg_curve = svg.append("g")
+	var svg_data = svg.append("g").attr("class", "svg_data")
+	var svg_curve = svg.append("g").attr("class", "svg_curve")
 
 	drawData(data)
 	makeCurve(model_degree)
- 
+	makeLegend();
+
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+ 	
+// DRAWING FUNCTIONS
+function drawData(data){
+	tData = transformData(data);
+	// Update	
+	var simar = svg_data.selectAll(".dot")
+				.data(tData)			
+				.attr("class","dot")
+				.attr("r", 3.5)
+				.attr("cx", function(d) {return scale_x(d.x);})
+				.attr("cy", function(d) {return scale_y(d.y);})
+				.style("fill", function(d) { return color("Data Points"); });
+
+	//Enter
+	simar.enter().append("circle")
+				.attr("class","dot")
+				.attr("r", 3.5)
+				.attr("cx", function(d) {return scale_x(d.x);})
+				.attr("cy", function(d) {return scale_y(d.y);})
+				.style("fill", function(d) { return color("Data Points"); });
+
+	
+	// Exit
+	simar.exit().remove();
+	drawCurve({x:{},y:{}})
+}
+
+function drawCurve(rData_v){
+	rData = rData_v
+
+	// we just have one element here so no update/ enter/ exit
+	// ref - https://www.dashingd3js.com/svg-paths-and-d3js
+	d3.selectAll(".curve-path").remove()
+	var lineGraph = svg_curve.append("path")
+				.attr("class", "curve-path")
+                .attr("d", lineFunction(rData))
+                .attr("stroke", "red")
+                .attr("stroke-width", 2)
+                .attr("fill", "none");
+}
+
+function makeCurve(p) {
+	model_degree = p
+	rResult = fitDataClosedForm(data, model_degree)
+	rData = transformData({x:data.x, y:rResult.yhat});
+	drawCurve(rData)
+}
+
+function makeLegend() {
 	var legend = svg.selectAll(".legend")
 		.data(color.domain())
 		.enter().append("g")
@@ -194,52 +217,7 @@ body {
 	  .attr("dy", ".35em")
 	  .style("text-anchor", "start")
 	  .text(function(d) { return d; });	
-	
-// DRAWING FUNCTIONS
-function drawData(data){
-	tData = transformData(data);
-	// Update	
-	var simar = svg_data.selectAll(".dot")
-			.data(tData)			
-				.attr("class","dot")
-				.attr("r", 3.5)
-				.attr("cx", function(d) {return scale_x(d.x);})
-				.attr("cy", function(d) {return scale_y(d.y);})
-				.style("fill", function(d) { return color("Data Points"); });
 
-	//Enter
-	simar.enter().append("circle")
-				.attr("class","dot")
-				.attr("r", 3.5)
-				.attr("cx", function(d) {return scale_x(d.x);})
-				.attr("cy", function(d) {return scale_y(d.y);})
-				.style("fill", function(d) { return color("Data Points"); });
-
-	
-	// Exit
-	simar.exit().remove();
-	//drawCurve({x:{},y:{}})
-}
-
-function drawCurve(rData_v){
-	rData = rData_v
-
-	// we just have one element here so no update/ enter/ exit
-	// ref - https://www.dashingd3js.com/svg-paths-and-d3js
-	d3.selectAll(".curve-path").remove()
-	var lineGraph = svg_curve.append("path")
-				.attr("class", "curve-path")
-                .attr("d", lineFunction(rData))
-                .attr("stroke", "blue")
-                .attr("stroke-width", 2)
-                .attr("fill", "none");
-}
-
-function makeCurve(p) {
-	model_degree = p
-	rResult = fitDataClosedForm(data, model_degree)
-	rData = transformData({x:data.x, y:rResult.yhat});
-	drawCurve(rData)
 }
 
 // EVENT HANDLING
@@ -279,7 +257,6 @@ todos
 -- may be add sliders
 - integrate bootstrap - https://getbootstrap.com/docs/3.3/components/#responsive-embed
 */
-
-
-
 </script>
+
+<script src="box_plot.js"></script>
