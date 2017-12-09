@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="51d12939-8474-4510-aea8-b8c60ac3d23f" name="Default" comment="" />
+    <list default="true" id="51d12939-8474-4510-aea8-b8c60ac3d23f" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bias-var/index.html" afterPath="$PROJECT_DIR$/bias-var/index.html" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +51,7 @@
         <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/lab.ipynb">
           <provider selected="true" editor-type-id="ipnb-editor">
             <state>
-              <selected id="7" />
+              <selected id="1" />
             </state>
           </provider>
         </entry>

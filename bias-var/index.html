@@ -70,12 +70,12 @@ body {
 	    	<h4>DEGREE</h4>
 	    	<p>What polynomial basis you want to use</p>
 			<div class="btn-group">
-			  <button type="button" class="btn btn-default">1</button>
-			  <button type="button" class="btn btn-default">2</button>
-			  <button type="button" class="btn btn-default">3</button>
-			  <button type="button" class="btn btn-default">4</button>
-			  <button type="button" class="btn btn-default">5</button>
-			  <button type="button" class="btn btn-default">6</button>
+			  <button type="button" class="btn btn-default" onclick="makeCurve(1);">1</button>
+			  <button type="button" class="btn btn-default" onclick="makeCurve(2);">2</button>
+			  <button type="button" class="btn btn-default" onclick="makeCurve(3);">3</button>
+			  <button type="button" class="btn btn-default" onclick="makeCurve(3);">4</button>
+			  <button type="button" class="btn btn-default" onclick="makeCurve(3);">5</button>
+			  <button type="button" class="btn btn-default" onclick="makeCurve(3);">6</button>
 			</div>
     	</div>
 
@@ -170,8 +170,8 @@ body {
 			.style("text-anchor", "end")
 			.text("y axis");
 
-	svg.append("g")
-		.selectAll(".dot")
+	var svg_data = svg.append("g")
+	svg_data.selectAll(".dot")
 			.data(tData)
 			.enter().append("circle")
 			.attr("class","dot")
@@ -180,8 +180,8 @@ body {
 			.attr("cy", function(d) {return scale_y(d.y);})
 			.style("fill", function(d) { return color("Data Points"); });
 
-	svg.append("g")
-		.selectAll(".dot")
+	var svg_curve = svg.append("g")
+	svg_curve.selectAll(".dot")
 			.data(rData)
 			.enter().append("circle")
 			.attr("class","dot")
@@ -192,63 +192,103 @@ body {
 
 	var legend = svg.selectAll(".legend")
 		.data(color.domain())
-	.enter().append("g")
-		.attr("class","legend")
-		.attr("transform",function(d, i) { return "translate(0," + i * 20 + ")"; });
+		.enter().append("g")
+			.attr("class","legend")
+			.attr("transform",function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-  legend.append("rect")
-      .attr("x", 0 + 60)
-      .attr("width", 18)
-      .attr("height", 18)
-      .style("fill", color);
+	legend.append("rect")
+	  .attr("x", 0 + 60)
+	  .attr("width", 18)
+	  .attr("height", 18)
+	  .style("fill", color);
 
-  legend.append("text")
-      .attr("x", 0 + 60+ 24)
-      .attr("y", 9)
-      .attr("dy", ".35em")
-      .style("text-anchor", "start")
-      .text(function(d) { return d; });	
+	legend.append("text")
+	  .attr("x", 0 + 60+ 24)
+	  .attr("y", 9)
+	  .attr("dy", ".35em")
+	  .style("text-anchor", "start")
+	  .text(function(d) { return d; });	
 	
 // DRAWING FUNCTIONS
 function drawData(data){
-	svg.append("g")
-		.selectAll(".dot")
-			.data(tData)
-			.enter().append("circle")
-			.attr("class","dot")
-			.attr("r", 3.5)
-			.attr("cx", function(d) {return scale_x(d.x);})
-			.attr("cy", function(d) {return scale_y(d.y);})
-			.style("fill", function(d) { return color("Data Points"); });	
+	tData = transformData(data);
+	// Update	
+	var simar = svg_data.selectAll(".dot")
+			.data(tData)			
+				.attr("class","dot")
+				.attr("r", 3.5)
+				.attr("cx", function(d) {return scale_x(d.x);})
+				.attr("cy", function(d) {return scale_y(d.y);})
+				.style("fill", function(d) { return color("Data Points"); });
+
+	//Enter
+	simar.enter().append("circle")
+				.attr("class","dot")
+				.attr("r", 3.5)
+				.attr("cx", function(d) {return scale_x(d.x);})
+				.attr("cy", function(d) {return scale_y(d.y);})
+				.style("fill", function(d) { return color("Data Points"); });
+
+	
+	// Exit
+	simar.exit().remove();
+	drawCurve({x:{},y:{}})
 }
 
+function drawCurve(rData_v){
+	rData = rData_v
+	// Update	
+	var simar = svg_curve.selectAll(".dot")
+			.data(rData)			
+				.attr("class","dot")
+				.attr("r", 3.5)
+				.attr("cx", function(d) {return scale_x(d.x);})
+				.attr("cy", function(d) {return scale_y(d.y);})
+				.style("fill", function(d) { return color("Data Points"); });
+
+	//Enter
+	simar.enter().append("circle")
+				.attr("class","dot")
+				.attr("r", 3.5)
+				.attr("cx", function(d) {return scale_x(d.x);})
+				.attr("cy", function(d) {return scale_y(d.y);})
+				.style("fill", function(d) { return color("Data Points"); });
+
+	
+	// Exit
+	simar.exit().remove();
+}
+
+function makeCurve(p) {
+	model_degree = p
+	rResult = fitDataClosedForm(data, model_degree)
+	rData = transformData({x:data.x, y:rResult.yhat});
+	drawCurve(rData)
+}
 
 // EVENT HANDLING
 $( "#data_1" ).click(function() {
 	w = [1,6,8, 5]
 	x = linspace(0,20,0.1)
-	nf = 1000
-	model_degree = 1
+	nf = 100
 	data = generateData(x,w,nf)
-	tData = transformData(data);
+	drawData(data);
 });
 
 $( "#data_2" ).click(function() {
 	w = [-100,-3,5,-8]
 	x = linspace(0,20,0.1)
-	nf = 1000
-	model_degree = 1
+	nf = 100
 	data = generateData(x,w,nf)
-	tData = transformData(data);
+	drawData(data);
 });
 
 $( "#data_3" ).click(function() {
 	w = [5,0,0]
 	x = linspace(0,20,0.1)
-	nf = 1000
-	model_degree = 1
+	nf = 100
 	data = generateData(x,w,nf)
-	tData = transformData(data);
+	drawData(data);
 });
 
 /*
