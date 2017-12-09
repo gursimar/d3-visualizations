@@ -92,11 +92,6 @@ body {
 </body>
 
 <script>
-	var simar = [0.1,0.2,0.3,0.4];
-	var data = {
-		x:[0.1,0.2,0.3,0.4],
-		y:[0.2,0.3,0.5,0.6]
-	};
 	w = [100,3,5] // slope
 	x = linspace(0,20,0.1)
 	nf = 1000 // noise factor
@@ -127,6 +122,11 @@ body {
 		.range([height, 0]);
 
 	var color = d3.scale.category10();;
+
+	var lineFunction = d3.svg.line()
+		.x(function(d) { return scale_x(d.x); })
+		.y(function(d) { return scale_y(d.y); })
+		.interpolate("linear");	
 
 	var xAxis = d3.svg.axis()
 		.scale(scale_x)
@@ -171,25 +171,11 @@ body {
 			.text("y axis");
 
 	var svg_data = svg.append("g")
-	svg_data.selectAll(".dot")
-			.data(tData)
-			.enter().append("circle")
-			.attr("class","dot")
-			.attr("r", 3.5)
-			.attr("cx", function(d) {return scale_x(d.x);})
-			.attr("cy", function(d) {return scale_y(d.y);})
-			.style("fill", function(d) { return color("Data Points"); });
-
 	var svg_curve = svg.append("g")
-	svg_curve.selectAll(".dot")
-			.data(rData)
-			.enter().append("circle")
-			.attr("class","dot")
-			.attr("r", 3.5)
-			.attr("cx", function(d) {return scale_x(d.x);})
-			.attr("cy", function(d) {return scale_y(d.y);})
-			.style("fill", function(d) { return color("Regression line"); });
 
+	drawData(data)
+	makeCurve(model_degree)
+ 
 	var legend = svg.selectAll(".legend")
 		.data(color.domain())
 		.enter().append("g")
@@ -232,31 +218,21 @@ function drawData(data){
 	
 	// Exit
 	simar.exit().remove();
-	drawCurve({x:{},y:{}})
+	//drawCurve({x:{},y:{}})
 }
 
 function drawCurve(rData_v){
 	rData = rData_v
-	// Update	
-	var simar = svg_curve.selectAll(".dot")
-			.data(rData)			
-				.attr("class","dot")
-				.attr("r", 3.5)
-				.attr("cx", function(d) {return scale_x(d.x);})
-				.attr("cy", function(d) {return scale_y(d.y);})
-				.style("fill", function(d) { return color("Data Points"); });
 
-	//Enter
-	simar.enter().append("circle")
-				.attr("class","dot")
-				.attr("r", 3.5)
-				.attr("cx", function(d) {return scale_x(d.x);})
-				.attr("cy", function(d) {return scale_y(d.y);})
-				.style("fill", function(d) { return color("Data Points"); });
-
-	
-	// Exit
-	simar.exit().remove();
+	// we just have one element here so no update/ enter/ exit
+	// ref - https://www.dashingd3js.com/svg-paths-and-d3js
+	d3.selectAll(".curve-path").remove()
+	var lineGraph = svg_curve.append("path")
+				.attr("class", "curve-path")
+                .attr("d", lineFunction(rData))
+                .attr("stroke", "blue")
+                .attr("stroke-width", 2)
+                .attr("fill", "none");
 }
 
 function makeCurve(p) {
