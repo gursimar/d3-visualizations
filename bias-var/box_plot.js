@@ -2,21 +2,8 @@
   WIDTH = 200
   HEIGHT = 350
 
-  errors = []
-  mc_iter = 100
-  y_orig = generateData(x,w,0)['y']
-  for(it=0;it<mc_iter;it++){
-      data = generateData(x, w, nf) // gives data as array of dict{x,y}
-      rResult = fitDataClosedForm(data, model_degree)
-      y_hat = rResult['yhat']
-      errors.push(compute_RMSE(y_orig, y_hat))
-  }
-
-  console.log(errors)
-
   var b_data = []
-  b_data.push(errors)
-  //b_data.push(linspace(1,100,1))
+  var errors = []
 
   b_HEIGHT = HEIGHT
   var b_margin = {top: 20, right: 50, bottom: 30, left: 50},
@@ -42,6 +29,20 @@
       .attr("transform", "translate(" + b_margin.left + "," + b_margin.top + ")")
       .call(chart);
 
+
+function generateBiasVarData(){
+  // learn multiple models and aggregate their errors
+  errors = []
+  mc_iter = 100
+  y_orig = generateData(x,w,0)['y']
+  for(it=0;it<mc_iter;it++){
+      data = generateData(x, w, nf) // gives data as array of dict{x,y}
+      rResult = fitDataClosedForm(data, model_degree)
+      y_hat = rResult['yhat']
+      errors.push(compute_RMSE(y_orig, y_hat))
+  }
+  b_data.push(errors)
+}
 
 
 
