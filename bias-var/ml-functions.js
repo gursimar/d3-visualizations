@@ -123,8 +123,8 @@ function computeErrorTest(){
 function computeErrorGeneralization(){
 	// resamples distribution 
 	var x_new = linspace(-50,50,1)
-	var y_test_gen = generateData(x,w,0)['y']
-	var y_hat = generateData(x,rResult.model,0)['y']
+	var y_test_gen = generateData(x_new,w,0)['y']
+	var y_hat = generateData(x_new,rResult.model,0)['y']
 	var error = compute_RMSE(y_test_gen, y_hat)
 	return error
 }

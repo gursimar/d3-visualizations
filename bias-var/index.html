@@ -26,14 +26,15 @@
 	    	<h4>DEGREE</h4>
 	    	<p>What polynomial basis you want to use</p>
 			<div class="btn-group">
-			  <button type="button" class="btn btn-default" onclick="drawCurve(1);">1</button>
-			  <button type="button" class="btn btn-default" onclick="drawCurve(2);">2</button>
-			  <button type="button" class="btn btn-default" onclick="drawCurve(3);">3</button>
-			  <button type="button" class="btn btn-default" onclick="drawCurve(4);">4</button>
-			  <button type="button" class="btn btn-default" onclick="drawCurve(5);">5</button>
-			  <button type="button" class="btn btn-default" onclick="drawCurve(6);">6</button>
+			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(1);">1</button>
+			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(2);">2</button>
+			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(3);">3</button>
+			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(4);">4</button>
+			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(5);">5</button>
+			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(6);">6</button>
 			</div>
-			<button type="button" class="btn btn-default" onclick="showBigPicture()">Big picture</button>
+			<button type="button" class="btn btn-default" onclick="showBigPicture()">Big pic</button>
+			<button type="button" class="btn btn-default" onclick="showActualPicture()">Actual pic</button>
 
     	</div>
 		<br><br><br>
@@ -71,13 +72,19 @@
 <script src="box_plot.js"></script>
 <script>
 	var x = linspace(-7,10,0.1)
-	var w = [] // slope
+	var w = []
+	var w_all = [
+		[-5,50,1],
+		[5, 6, 2, 3],
+		[7,4,-1,10,-1]]
+	var w_ind = 1
 	var nf = 100 // noise factor
 	var model_degree = 1
 	var data = []
 	var tData = [] // transformed data used in d3
 	var rResult = [] //result of the regression fitting
 	var rData = [] //transformed result data used in d3
+	var view = 0;
 
 	// Setup d3
 	WIDTH = 560
@@ -103,6 +110,7 @@
 	var scale_x = []
 	var scale_y = []
 
+	data = createData()
 	showActualPicture()
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////

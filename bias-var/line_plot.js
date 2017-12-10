@@ -35,9 +35,9 @@ function drawXY(x_min, x_max, y_min, y_max) {
 			.text("y axis");	
 }
 
-function drawData(){
-	tData = transformData(data);
-	console.log(tData)
+function drawData(data_t){
+	tData = transformData(data_t);
+	//console.log(tData)
 	// Update	
 	var simar = svg_data.selectAll(".dot")
 				.data(tData)			
@@ -60,10 +60,8 @@ function drawData(){
 	clearCurve()
 }
 
-function drawCurve(p) {
-	model_degree = p
-	rResult = fitDataClosedForm(data, model_degree)
-	rData = transformData({x:data.x, y:rResult.yhat});
+function drawCurve(data_t) {
+	rData = transformData(data_t);
 	clearCurve()
 
 	// Draw curve
@@ -109,37 +107,55 @@ function makeLegend() {
 
 }
 
-function fixScales(){
-	scale_x.domain([0, d3.max(data.x)])
-	scale_y.domain([0, d3.max(data.y)])
+// Data generation functions
+function createData(){
+	w = w_all[w_ind]
+	var data_t = generateData(x,w,nf)
+	return data_t
 }
+
+function learnDrawCurve(p){
+	model_degree = p
+	rResult = fitDataClosedForm(data, model_degree)
+	drawCurve({x:data.x, y:rResult.yhat})
+}
+
 
 function showActualPicture() {
 	// Draw things on canvas
+	clearCanvas()
 	x_min = d3.min(x)
 	x_max = d3.max(x)
 	y_min = -1000
 	y_max = +1000
 	drawXY(x_min, x_max, y_min, y_max)
-	$("#data_2").click()
+	drawData(data);	
+	drawCurve({x:data.x, y:rResult.yhat})
 	makeLegend();
 }
 
 
 function showBigPicture(){
 	// Draw things on canvas
+	clearCanvas()
 	var big_x = linspace(-50,50,1)
+
+	data_big = generateData(big_x,w,nf)
+	big_yhat = generateData(big_x,rResult.model,0)['y']
+	data_y_big = {x:big_x, y:big_yhat}
+	console.log(data_y_big)
+
 	x_min = d3.min(big_x)
 	x_max = d3.max(big_x)
-	y_min = -1000
-	y_max = +1000
+	y_min = d3.min(big_yhat)
+	y_max = d3.max(big_yhat)
 	drawXY(x_min, x_max, y_min, y_max)
-	//$("#data_2").click()
-	//makeLegend();
+	drawData(data_big)
+	drawCurve(data_y_big)
+
+	makeLegend();
 
 }
-
-
 
 // Clearing functions
 function clearData(){
