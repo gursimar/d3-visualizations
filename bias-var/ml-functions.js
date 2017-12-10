@@ -54,6 +54,8 @@
 	}
 
 	function transformData(data){
+		// takes an array of two dictionaries x:[],y:[]
+		// returns array of dictionaries of [{x,y}]
 		var tData = []
 		for (i=0; i< data.x.length; i++){
 			tData[i] = {
@@ -113,9 +115,6 @@
 		return result
 	}
 
-	function generateRandomData(){
-
-	}
 
 	// regression function
 	function fitData(data){
@@ -158,3 +157,11 @@
 		}
 		return result
     }	
+
+    function compute_RMSE(y_orig, y_hat){
+	    error = 0
+	    for(i=0;i<y_orig.length;i++){
+	        error = error + Math.pow((y_orig[i] - y_hat[i]),2)
+        }
+        return Math.sqrt(error)/y_orig.length
+    }

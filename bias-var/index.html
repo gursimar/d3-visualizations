@@ -4,17 +4,6 @@
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles.css">
-
-
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="node_modules/mathjs/dist/math.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="node_modules/js-regression/src/jsregression.js"></script> <!-- this is not needed-->
-
-<script src="ml-functions.js"></script>
-<script src="box.js"></script>
-
 <body>
 <div class="jumbotron text-center">
   <h2>Polynomial regression<font size="3">(<a href="https://en.wikipedia.org/wiki/Polynomial_regression">?</a>)</font> bias-variance tradeoff<font size="3">(<a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">?</a>)</font> playground</h2>
@@ -40,9 +29,9 @@
 			  <button type="button" class="btn btn-default" onclick="makeCurve(1);">1</button>
 			  <button type="button" class="btn btn-default" onclick="makeCurve(2);">2</button>
 			  <button type="button" class="btn btn-default" onclick="makeCurve(3);">3</button>
-			  <button type="button" class="btn btn-default" onclick="makeCurve(3);">4</button>
-			  <button type="button" class="btn btn-default" onclick="makeCurve(3);">5</button>
-			  <button type="button" class="btn btn-default" onclick="makeCurve(3);">6</button>
+			  <button type="button" class="btn btn-default" onclick="makeCurve(4);">4</button>
+			  <button type="button" class="btn btn-default" onclick="makeCurve(5);">5</button>
+			  <button type="button" class="btn btn-default" onclick="makeCurve(6);">6</button>
 			</div>
     	</div>
 
@@ -60,20 +49,23 @@
 
 </body>
 
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="node_modules/mathjs/dist/math.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="node_modules/js-regression/src/jsregression.js"></script> <!-- not needed-->
+<script src="ml-functions.js"></script>
+<script src="box.js"></script>
+<script src="event_handling.js"></script>
 <script>
-	w = [100,3,5] // slope
-	x = linspace(0,20,0.1)
-	nf = 1000 // noise factor
-	model_degree = 1
-	data = generateData(x,w,nf) // gives data as array of dict{x,y}
-	tData = transformData(data);
-	//data_r = transformDataReg(data, model_degree)	// gives data as arrays of array [x,y]
-	//rResult = fitData(data_r)
-	rResult = fitDataClosedForm(data, model_degree)
-
-	//console.log(transformData(data));
-	rData = transformData({x:data.x, y:rResult.yhat});
-
+	var x = []
+	var w = [] // slope
+	var nf = 0 // noise factor
+	var model_degree = 1
+	var data = []
+	var tData = [] // transformed data used in d3
+	var rResult = [] //result of the regression fitting
+	var rData = [] //transformed result data used in d3
 
 	// Setup d3
 	WIDTH = 560
@@ -83,19 +75,14 @@
 		height = HEIGHT - margin.top - margin.bottom;
 
 	var scale_x = d3.scale.linear()
-		.domain([0, d3.max(data.x)])
+		.domain([-7, 10])
 		.range([0, width]);
 
 	var scale_y = d3.scale.linear()
-		.domain([0, d3.max(data.y)])
+		.domain([-1000, 1000])
 		.range([height, 0]);
 
 	var color = d3.scale.category10();;
-
-	var lineFunction = d3.svg.line()
-		.x(function(d) { return scale_x(d.x); })
-		.y(function(d) { return scale_y(d.y); })
-		.interpolate("linear");	
 
 	var xAxis = d3.svg.axis()
 		.scale(scale_x)
@@ -111,6 +98,11 @@
 		.append("g")
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	
+	var lineFunction = d3.svg.line()
+		.x(function(d) { return scale_x(d.x); })
+		.y(function(d) { return scale_y(d.y); })
+		.interpolate("linear");	
+
 	//x.domain(d3.extent(data, function(d) { return d.dim1; })).nice();
   	//y.domain(d3.extent(data, function(d) { return d.dim2; })).nice();
 
@@ -141,9 +133,7 @@
 
 	var svg_data = svg.append("g").attr("class", "svg_data")
 	var svg_curve = svg.append("g").attr("class", "svg_curve")
-
-	drawData(data)
-	makeCurve(model_degree)
+	$("#data_2").click()
 	makeLegend();
 
 
@@ -152,7 +142,7 @@
 
  	
 // DRAWING FUNCTIONS
-function drawData(data){
+function drawData(){
 	tData = transformData(data);
 	// Update	
 	var simar = svg_data.selectAll(".dot")
@@ -174,12 +164,12 @@ function drawData(data){
 	
 	// Exit
 	simar.exit().remove();
-	drawCurve({x:{},y:{}})
+
+	// remove if there is any curve
+	d3.selectAll(".curve-path").remove()
 }
 
-function drawCurve(rData_v){
-	rData = rData_v
-
+function drawCurve(){
 	// we just have one element here so no update/ enter/ exit
 	// ref - https://www.dashingd3js.com/svg-paths-and-d3js
 	d3.selectAll(".curve-path").remove()
@@ -195,7 +185,36 @@ function makeCurve(p) {
 	model_degree = p
 	rResult = fitDataClosedForm(data, model_degree)
 	rData = transformData({x:data.x, y:rResult.yhat});
-	drawCurve(rData)
+	drawCurve()
+	console.log(rResult.model)
+	console.log(computeErrorTrain(rData))
+}
+
+function computeErrorTrain(){
+	// computes error between y_orig_with_noise and y_predicted
+	y_orig_noise = data['y']
+	y_hat = rResult['yhat']
+	error = compute_RMSE(y_orig, y_hat)
+	return error
+}
+
+function computeErrorTest(){
+	// resamples distribution 
+	//// will have to think over it
+	y_test_noise = generateData(x,w,nf)['y']
+	y_hat = rResult['yhat']
+	error = compute_RMSE(y_test_noise, y_hat)
+	return error
+}
+
+function computeErrorGeneralization(){
+	// resamples distribution 
+	x = linspace(-50,50,0.1)
+	y_test_gen = generateData(x,w,0)['y']
+	
+	y_hat = rResult_test['yhat']
+	error = compute_RMSE(y_test_noise, y_hat)
+	return error
 }
 
 function makeLegend() {
@@ -220,43 +239,10 @@ function makeLegend() {
 
 }
 
-// EVENT HANDLING
-$( "#data_1" ).click(function() {
-	w = [1,6,8, 5]
-	x = linspace(0,20,0.1)
-	nf = 100
-	data = generateData(x,w,nf)
-	drawData(data);
-});
+function fixScales(){
+	scale_x.domain([0, d3.max(data.x)])
+	scale_y.domain([0, d3.max(data.y)])
+}
 
-$( "#data_2" ).click(function() {
-	w = [-100,-3,5,-8]
-	x = linspace(0,20,0.1)
-	nf = 100
-	data = generateData(x,w,nf)
-	drawData(data);
-});
-
-$( "#data_3" ).click(function() {
-	w = [5,0,0]
-	x = linspace(0,20,0.1)
-	nf = 100
-	data = generateData(x,w,nf)
-	drawData(data);
-});
-
-/*
-todos
-- Add equation of line in legend
-- integrate quick angular
-- add slides
--- generating data degree
--- noise
--- fitting polynomial
-- how much graph to visualize?
--- may be add sliders
-- integrate bootstrap - https://getbootstrap.com/docs/3.3/components/#responsive-embed
-*/
 </script>
-
 <script src="box_plot.js"></script>

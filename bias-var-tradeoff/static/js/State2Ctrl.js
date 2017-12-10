@@ -183,9 +183,7 @@ app.controller("State2Ctrl", function($scope) {
 
 
     errors = []
-    degree = 2
     mc_iter = 40
-
     for(it=0;it<mc_iter;it++){
         data = generateData(x, $scope.w, $scope.nf) // gives data as array of dict{x,y}
         rResult = fitDataClosedForm(data, degree)

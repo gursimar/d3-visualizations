@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51d12939-8474-4510-aea8-b8c60ac3d23f" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bias-var-tradeoff/static/js/State2Ctrl.js" afterPath="$PROJECT_DIR$/bias-var-tradeoff/static/js/State2Ctrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bias-var/box_plot.js" afterPath="$PROJECT_DIR$/bias-var/box_plot.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bias-var/index.html" afterPath="$PROJECT_DIR$/bias-var/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bias-var/ml-functions.js" afterPath="$PROJECT_DIR$/bias-var/ml-functions.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -51,7 +54,7 @@
         <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/lab.ipynb">
           <provider selected="true" editor-type-id="ipnb-editor">
             <state>
-              <selected id="1" />
+              <selected id="3" />
             </state>
           </provider>
         </entry>
@@ -59,8 +62,8 @@
       <file leaf-file-name="State2Ctrl.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/State2Ctrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="24">
-              <caret line="185" column="14" lean-forward="false" selection-start-line="185" selection-start-column="14" selection-end-line="185" selection-end-column="14" />
+            <state relative-caret-position="241">
+              <caret line="174" column="4" lean-forward="false" selection-start-line="174" selection-start-column="4" selection-end-line="174" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -109,8 +112,8 @@
       <file leaf-file-name="ml-functions.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/ml-functions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="52">
-              <caret line="141" column="30" lean-forward="false" selection-start-line="141" selection-start-column="13" selection-end-line="141" selection-end-column="30" />
+            <state relative-caret-position="607">
+              <caret line="166" column="24" lean-forward="false" selection-start-line="166" selection-start-column="18" selection-end-line="166" selection-end-column="24" />
               <folding>
                 <element signature="n#!!doc;n#gradientDescent#0" expanded="false" />
               </folding>
@@ -143,9 +146,9 @@
         <option value="$PROJECT_DIR$/bias-var-tradeoff/static/index.html" />
         <option value="$PROJECT_DIR$/bias-var-tradeoff/static/js/app.js" />
         <option value="$PROJECT_DIR$/bias-var-tradeoff/static/js/State3Ctrl.js" />
-        <option value="$PROJECT_DIR$/bias-var-tradeoff/static/js/State2Ctrl.js" />
         <option value="$PROJECT_DIR$/bias-var-tradeoff/static/js/State1Ctrl.js" />
         <option value="$PROJECT_DIR$/bias-var-tradeoff/lab.ipynb" />
+        <option value="$PROJECT_DIR$/bias-var-tradeoff/static/js/State2Ctrl.js" />
       </list>
     </option>
   </component>
@@ -650,45 +653,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/State2Ctrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="185" column="14" lean-forward="false" selection-start-line="185" selection-start-column="14" selection-end-line="185" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/State3Ctrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="185" column="0" lean-forward="false" selection-start-line="185" selection-start-column="0" selection-end-line="185" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/startServer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/sliderDemoCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/ml-functions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="141" column="30" lean-forward="false" selection-start-line="141" selection-start-column="13" selection-end-line="141" selection-end-column="30" />
-          <folding>
-            <element signature="n#!!doc;n#gradientDescent#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -720,6 +689,40 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="155" column="22" lean-forward="false" selection-start-line="155" selection-start-column="22" selection-end-line="155" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/ml-functions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="607">
+          <caret line="166" column="24" lean-forward="false" selection-start-line="166" selection-start-column="18" selection-end-line="166" selection-end-column="24" />
+          <folding>
+            <element signature="n#!!doc;n#gradientDescent#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/sliderDemoCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/State3Ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="185" column="0" lean-forward="false" selection-start-line="185" selection-start-column="0" selection-end-line="185" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bias-var-tradeoff/static/js/State2Ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="174" column="4" lean-forward="false" selection-start-line="174" selection-start-column="4" selection-end-line="174" selection-end-column="44" />
           <folding />
         </state>
       </provider>
