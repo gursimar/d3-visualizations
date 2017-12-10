@@ -26,14 +26,14 @@
 	    	<h4>DEGREE</h4>
 	    	<p>What polynomial basis you want to use</p>
 			<div class="btn-group">
-			  <button type="button" class="btn btn-default" onclick="makeCurve(1);">1</button>
-			  <button type="button" class="btn btn-default" onclick="makeCurve(2);">2</button>
-			  <button type="button" class="btn btn-default" onclick="makeCurve(3);">3</button>
-			  <button type="button" class="btn btn-default" onclick="makeCurve(4);">4</button>
-			  <button type="button" class="btn btn-default" onclick="makeCurve(5);">5</button>
-			  <button type="button" class="btn btn-default" onclick="makeCurve(6);">6</button>
+			  <button type="button" class="btn btn-default" onclick="drawCurve(1);">1</button>
+			  <button type="button" class="btn btn-default" onclick="drawCurve(2);">2</button>
+			  <button type="button" class="btn btn-default" onclick="drawCurve(3);">3</button>
+			  <button type="button" class="btn btn-default" onclick="drawCurve(4);">4</button>
+			  <button type="button" class="btn btn-default" onclick="drawCurve(5);">5</button>
+			  <button type="button" class="btn btn-default" onclick="drawCurve(6);">6</button>
 			</div>
-			<button type="button" class="btn btn-default" onclick="bigPicture()">Big picture</button>
+			<button type="button" class="btn btn-default" onclick="showBigPicture()">Big picture</button>
 
     	</div>
 		<br><br><br>
@@ -71,7 +71,6 @@
 <script src="box_plot.js"></script>
 <script>
 	var x = linspace(-7,10,0.1)
-	var big_x = linspace(-50,50,1)
 	var w = [] // slope
 	var nf = 100 // noise factor
 	var model_degree = 1
@@ -95,20 +94,16 @@
 
 	var svg_data = svg.append("g").attr("class", "svg_data")
 	var svg_curve = svg.append("g").attr("class", "svg_curve")
+	var x_axis = svg.append("g").attr("class", "x axis")
+	var y_axis = svg.append("g").attr("class", "y axis")
+	var legend_main = svg.append("g").attr("class", "legend_main")
+
 	
 	var color = d3.scale.category10();;
 	var scale_x = []
 	var scale_y = []
 
-
-	// Draw things on canvas
-	x_min = d3.min(x)
-	x_max = d3.max(x)
-	y_min = -1000
-	y_max = +1000
-	drawXY(x_min, x_max, y_min, y_max)
-	$("#data_2").click()
-	makeLegend();
+	showActualPicture()
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 

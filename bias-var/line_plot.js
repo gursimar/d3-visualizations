@@ -16,9 +16,7 @@ function drawXY(x_min, x_max, y_min, y_max) {
 		.scale(scale_y)
 		.orient("left");
 
-	svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + height + ")")
+	x_axis.attr("transform", "translate(0," + height + ")")
 		.call(xAxis)
 		.append("text")
 			.attr("class","label")
@@ -27,9 +25,7 @@ function drawXY(x_min, x_max, y_min, y_max) {
 			.style("text-anchor", "end")
 			.text("x axis");
 
-	svg.append("g")
-		.attr("class", "y axis")
-		.call(yAxis)
+	y_axis.call(yAxis)
 		.append("text")
 			.attr("class","label")
 			.attr("transform", "rotate(-90)")
@@ -41,6 +37,7 @@ function drawXY(x_min, x_max, y_min, y_max) {
 
 function drawData(){
 	tData = transformData(data);
+	console.log(tData)
 	// Update	
 	var simar = svg_data.selectAll(".dot")
 				.data(tData)			
@@ -57,20 +54,19 @@ function drawData(){
 				.attr("cx", function(d) {return scale_x(d.x);})
 				.attr("cy", function(d) {return scale_y(d.y);})
 				.style("fill", function(d) { return color("Data Points"); });
-
 	
 	// Exit
 	simar.exit().remove();
-
-	// remove if there is any curve
-	d3.selectAll(".curve-path").remove()
+	clearCurve()
 }
 
-function drawCurve(){
-	// we just have one element here so no update/ enter/ exit
-	// ref - https://www.dashingd3js.com/svg-paths-and-d3js
-	d3.selectAll(".curve-path").remove()
+function drawCurve(p) {
+	model_degree = p
+	rResult = fitDataClosedForm(data, model_degree)
+	rData = transformData({x:data.x, y:rResult.yhat});
+	clearCurve()
 
+	// Draw curve
 	lineFunction = d3.svg.line()
 		.x(function(d) { return scale_x(d.x); })
 		.y(function(d) { return scale_y(d.y); })
@@ -82,13 +78,7 @@ function drawCurve(){
                 .attr("stroke", "red")
                 .attr("stroke-width", 2)
                 .attr("fill", "none");
-}
 
-function makeCurve(p) {
-	model_degree = p
-	rResult = fitDataClosedForm(data, model_degree)
-	rData = transformData({x:data.x, y:rResult.yhat});
-	drawCurve()
 	console.log("Model -> " + rResult.model)
 	console.log("Train error -> " + computeErrorTrain())
 	console.log("Train error (/w noise) -> " + computeErrorTrainWN())
@@ -98,7 +88,7 @@ function makeCurve(p) {
 
 
 function makeLegend() {
-	var legend = svg.selectAll(".legend")
+	var legend = legend_main.selectAll(".legend")
 		.data(color.domain())
 		.enter().append("g")
 			.attr("class","legend")
@@ -124,6 +114,54 @@ function fixScales(){
 	scale_y.domain([0, d3.max(data.y)])
 }
 
-function bigPicture(){
+function showActualPicture() {
+	// Draw things on canvas
+	x_min = d3.min(x)
+	x_max = d3.max(x)
+	y_min = -1000
+	y_max = +1000
+	drawXY(x_min, x_max, y_min, y_max)
+	$("#data_2").click()
+	makeLegend();
+}
+
+
+function showBigPicture(){
+	// Draw things on canvas
+	var big_x = linspace(-50,50,1)
+	x_min = d3.min(big_x)
+	x_max = d3.max(big_x)
+	y_min = -1000
+	y_max = +1000
+	drawXY(x_min, x_max, y_min, y_max)
+	//$("#data_2").click()
+	//makeLegend();
 
 }
+
+
+
+// Clearing functions
+function clearData(){
+	svg_data.selectAll("*").remove()
+}
+
+function clearCurve(){
+	svg_curve.selectAll("*").remove()	
+}
+
+function clearXY(){
+	x_axis.selectAll("*").remove()
+}
+
+function clearLegend(){
+	legend_main.selectAll("*").remove()	
+}
+
+function clearCanvas() {
+	clearData()
+	clearCurve()
+	clearXY()
+	clearLegend()
+}
+

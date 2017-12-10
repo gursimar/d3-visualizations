@@ -25,7 +25,7 @@ function transformData(data){
 function _polyBasis(x,n){
 	var resultMat = math.ones(x.length,1)
 	for (i=1;i<=n;i++){
-		nthBasis = math.matrix(x).map(function(d){return Math.pow(d,i)})
+		var nthBasis = math.matrix(x).map(function(d){return Math.pow(d,i)})
 		math.reshape(nthBasis,[x.length,1])
 		resultMat = math.concat(resultMat, nthBasis)
 	}
@@ -33,14 +33,14 @@ function _polyBasis(x,n){
 }
 
 function generateData(x,w,nf){
-	noise = math.ones(x.length).map(function(d){return Math.random()*nf})
+	var noise = math.ones(x.length).map(function(d){return Math.random()*nf})
 	var xDataMat = _polyBasis(x,w.length-1)
 
 	//const yDataMat = math.add(math.multiply(xDataMat,w),b)	//wx+b
 	const yDataMat = math.multiply(xDataMat,w)	//wx+b
-	yDataMatNoise = math.add(yDataMat, noise)
+	var yDataMatNoise = math.add(yDataMat, noise)
 
-	result = {
+	var result = {
 		x:x,
 		y:yDataMatNoise.valueOf()
 	}
@@ -48,10 +48,10 @@ function generateData(x,w,nf){
 }
 
 function fitDataClosedForm(data, model_degree){
-	x = data.x
-	y = data.y
-	xDataMat = _polyBasis(x,model_degree)
-	yDataMat = math.matrix(y)
+	var x = data.x
+	var y = data.y
+	var xDataMat = _polyBasis(x,model_degree)
+	var yDataMat = math.matrix(y)
 	math.reshape(yDataMat,[y.length,1])
 	//console.log(xDataMat)
 	//console.log(yDataMat)
@@ -60,19 +60,19 @@ function fitDataClosedForm(data, model_degree){
 	var tr_X = math.multiply(tr, xDataMat);
 	var tr_y = math.multiply(tr, yDataMat);
 	var theta = math.multiply( math.inv(tr_X), tr_y );
-	yhat = math.multiply(xDataMat,theta)
+	var yhat = math.multiply(xDataMat,theta)
 	//console.log	(yhat)
 
 	// some transformation required
-	newTheta = []
-	simar = theta.valueOf()
+	var newTheta = []
+	var simar = theta.valueOf()
 	//console.log(simar)
 	for (i = 0; i<simar.length; i++){
 		newTheta.push(simar[i][0])
 	}
 	//console.log(newTheta)
 
-	result = {
+	var result = {
 		model:newTheta,
 		yhat:yhat.valueOf()
 	}
@@ -88,7 +88,7 @@ function splitData(data, r){
 // Error functions
 
 function compute_RMSE(y_orig_temp, y_hat){
-    error = 0
+    var error = 0
     for(i=0;i<y_orig_temp.length;i++){
         error = error + Math.pow((y_orig_temp[i] - y_hat[i]),2)
     }
@@ -97,35 +97,35 @@ function compute_RMSE(y_orig_temp, y_hat){
 
 function computeErrorTrain(){
 	// computes error between y_orig_with_noise and y_predicted
-	y_orig_noise = data['y']
-	y_hat = rResult['yhat']
-	error = compute_RMSE(y_orig_noise, y_hat)
+	var y_orig_noise = data['y']
+	var y_hat = rResult['yhat']
+	var error = compute_RMSE(y_orig_noise, y_hat)
 	return error
 }
 
 function computeErrorTrainWN(){
 	// computes error between y_orig_with_noise and y_predicted
-	y_orig =  generateData(x,w,0)['y']
-	y_hat = rResult['yhat']
-	error = compute_RMSE(y_orig_noise, y_hat)
+	var y_orig =  generateData(x,w,0)['y']
+	var y_hat = rResult['yhat']
+	var error = compute_RMSE(y_orig, y_hat)
 	return error
 }
 
 function computeErrorTest(){
 	// resamples distribution 
 	//// will have to think over it
-	y_test_noise = generateData(x,w,nf)['y']
-	y_hat = rResult['yhat']
-	error = compute_RMSE(y_test_noise, y_hat)
+	var y_test_noise = generateData(x,w,nf)['y']
+	var y_hat = rResult['yhat']
+	var error = compute_RMSE(y_test_noise, y_hat)
 	return error
 }
 
 function computeErrorGeneralization(){
 	// resamples distribution 
-	x = linspace(-50,50,1)
-	y_test_gen = generateData(x,w,0)['y']
-	y_hat = generateData(x,rResult.model,0)['y']
-	error = compute_RMSE(y_test_gen, y_hat)
+	var x_new = linspace(-50,50,1)
+	var y_test_gen = generateData(x,w,0)['y']
+	var y_hat = generateData(x,rResult.model,0)['y']
+	var error = compute_RMSE(y_test_gen, y_hat)
 	return error
 }
 
