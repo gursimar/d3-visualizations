@@ -42,6 +42,7 @@ function generateBiasVarData(){
       errors.push(compute_RMSE(y_orig, y_hat))
   }
   b_data.push(errors)
+  console.log(b_data)
 }
 
 

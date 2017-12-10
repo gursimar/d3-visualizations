@@ -76,12 +76,6 @@ function drawCurve(data_t) {
                 .attr("stroke", "red")
                 .attr("stroke-width", 2)
                 .attr("fill", "none");
-
-	console.log("Model -> " + rResult.model)
-	console.log("Train error -> " + computeErrorTrain())
-	console.log("Train error (/w noise) -> " + computeErrorTrainWN())
-	//console.log("Test error - " + computeErrorTest())
-	console.log("Generalization error -> " + computeErrorGeneralization())
 }
 
 
@@ -116,8 +110,14 @@ function createData(){
 
 function learnDrawCurve(p){
 	model_degree = p
-	rResult = fitDataClosedForm(data, model_degree)
+	rResult = fitDataClosedForm(data, model_degree)	
 	drawCurve({x:data.x, y:rResult.yhat})
+
+	console.log("Model -> " + rResult.model)
+	console.log("Train error -> " + computeErrorTrain())
+	console.log("Train error (/w noise) -> " + computeErrorTrainWN())
+	//console.log("Test error - " + computeErrorTest())
+	console.log("Generalization error -> " + computeErrorGeneralization())
 }
 
 
@@ -130,7 +130,9 @@ function showActualPicture() {
 	y_max = +1000
 	drawXY(x_min, x_max, y_min, y_max)
 	drawData(data);	
-	drawCurve({x:data.x, y:rResult.yhat})
+	if (rResult.length != 0) { //hack to handle the opening case
+		drawCurve({x:data.x, y:rResult.yhat})
+	}
 	makeLegend();
 }
 
@@ -143,7 +145,6 @@ function showBigPicture(){
 	data_big = generateData(big_x,w,nf)
 	big_yhat = generateData(big_x,rResult.model,0)['y']
 	data_y_big = {x:big_x, y:big_yhat}
-	console.log(data_y_big)
 
 	x_min = d3.min(big_x)
 	x_max = d3.max(big_x)
