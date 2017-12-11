@@ -7,9 +7,13 @@ body {
 {   
 	padding-top: 1px;
 	padding-bottom:5px;
-	background-color:#eee;
-	//background-color:red;
+	//background-color:#eee;
+	background-color:#183D4E;
 	//height:150px;
+ }
+
+ .jumbotext{
+  color:rgba(255, 255, 255, 0.9)
  }
 
  .sidebar
