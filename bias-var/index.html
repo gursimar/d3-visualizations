@@ -12,16 +12,26 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-2">
-    	<div>
-	    	<h4>DATA</h4>
-	    	<p>What complexity of data you want to use</p>
-			<div class="btn-group">
+    	<div style="margin-bottom:30px">
+	    	<h4>DATASET</h4>
+	    	<p>Which dataset you want to use?</p>
+	        <div class="dataset-list">
+	          <div class="dataset" title="Circle">
+	            <img id="DS_a" src="images/a.png" class="data-thumbnail selected"></canvas>
+	          </div>
+	          <div class="dataset" title="Exclusive or">
+	            <img id="DS_b" src="images/b.png" class="data-thumbnail"></canvas>
+	          </div>
+	          <div class="dataset" title="Gaussian">
+	            <img id="DS_c" src="images/c.png" class="data-thumbnail"></canvas>
+	          </div>
+	        </div>	    	
+			<!--div class="btn-group">
 			  <button type="button" id="data_1" class="btn btn-default">Linear</button>
 			  <button type="button" id="data_2" class="btn btn-default">Cmplx</button>
 			  <button type="button" id="data_3" class="btn btn-default">Cmplx</button>
-			</div>
+			</div-->
     	</div>
-    	<br><br><br>
     	<div>
 	    	<h4>DEGREE</h4>
 	    	<p>What polynomial basis you want to use</p>
