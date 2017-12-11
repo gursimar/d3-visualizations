@@ -57,12 +57,12 @@ body {
 // bar chart
 
 .y.axisRight text {
-    fill: orange;
+    //fill: orange;
 }
 
 
 .y.axisLeft text {
-    fill: steelblue;
+    //fill: steelblue;
 }
 .axis path,
 .axis line {
@@ -71,12 +71,16 @@ body {
   shape-rendering: crispEdges;
 }
 .bar1 {
-  fill: steelblue;
+  //fill: steelblue;
 }
 .bar2 {
-  fill: orange;
+  //fill: orange;
 }
 .x.axis path {
   //display: none;
+}
+
+.label_chart {
+    font-size: 14px;
 }
 </style>

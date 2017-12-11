@@ -19,7 +19,7 @@ function drawXY(x_min, x_max, y_min, y_max) {
 	x_axis.attr("transform", "translate(0," + height + ")")
 		.call(xAxis)
 		.append("text")
-			.attr("class","label")
+			.attr("class","label_chart")
 			.attr("x", width)
 			.attr("y", -6)
 			.style("text-anchor", "end")
@@ -27,7 +27,7 @@ function drawXY(x_min, x_max, y_min, y_max) {
 
 	y_axis.call(yAxis)
 		.append("text")
-			.attr("class","label")
+			.attr("class","label_chart")
 			.attr("transform", "rotate(-90)")
 			.attr("y", 6)
 			.attr("dy", ".71em")
@@ -73,7 +73,8 @@ function drawCurve(data_t) {
 	var lineGraph = svg_curve.append("path")
 				.attr("class", "curve-path")
                 .attr("d", lineFunction(rData))
-                .attr("stroke", "red")
+                .attr("stroke", function(d) { return color("Regression line"); })
+                //.attr("stroke", "red")
                 .attr("stroke-width", 2)
                 .attr("fill", "none");
 }
@@ -84,7 +85,7 @@ function makeLegend() {
 		.data(color.domain())
 		.enter().append("g")
 			.attr("class","legend")
-			.attr("transform",function(d, i) { return "translate(0," + i * 20 + ")"; });
+			.attr("transform",function(d, i) { return "translate(-20," + i * 20 + ")"; });
 
 	legend.append("rect")
 	  .attr("x", 0 + 60)
@@ -95,11 +96,13 @@ function makeLegend() {
 	legend.append("text")
 	  .attr("x", 0 + 60+ 24)
 	  .attr("y", 9)
+	  //.attr("class","label")
 	  .attr("dy", ".35em")
 	  .style("text-anchor", "start")
 	  .text(function(d) { return d; });	
 
 }
+
 
 // Data generation functions
 function createData(){
@@ -115,7 +118,7 @@ function learnDrawCurve(p){
 
 	// i can remove it afterwards
 	generateBiasVarData()
-
+	makeLegend()
 	//console.log("Model -> " + rResult.model)
 	//console.log("Train error -> " + computeErrorTrain())
 	//console.log("Train error (/w noise) -> " + computeErrorTrainWN())

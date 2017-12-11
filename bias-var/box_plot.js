@@ -19,13 +19,14 @@
     
   var min = 100000//d3.min(errors)
   var max = 0//d3.max(errors)
+  d3.select("#plot-2").append("g")
 
 
 function reDrawBoxes() {
 
   d3.select("#plot-2").selectAll("svg").remove();
   chart.domain([min, max]); // CHECK THIS
-  var svg = d3.select("#plot-2").selectAll("svg")
+  var svg = d3.select("#plot-2").selectAll("g").selectAll("svg")
       .data(b_data_scaled)
       .enter().append("svg")
       .attr("class", "box")

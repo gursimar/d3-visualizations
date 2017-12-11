@@ -54,7 +54,7 @@ var svg_bar = d3.select("#plot-3").append("svg")
     .attr("class", "graph")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  reDrawBars()    
+  //reDrawBars()    
 
 function reDrawBars() {
   WIDTH = 540
@@ -77,6 +77,7 @@ function reDrawBars() {
 
   svg_bar.append("g")
     .attr("class", "y axis axisLeft")
+    .attr("fill", function(d) { return color("Bias"); }) // custom choice
     .attr("transform", "translate(0,0)")
     .call(yAxisLeft)
 
@@ -89,7 +90,7 @@ function reDrawBars() {
   
   svg_bar.append("g")
     .attr("class", "y axis axisRight")
-    .attr("fill", "orange") // custom choice
+    .attr("fill", function(d) { return color("Variance"); }) // custom choice
     .attr("transform", "translate(" + (width) + ",0)")
     .call(yAxisRight)
 
@@ -106,14 +107,16 @@ function reDrawBars() {
       .attr("x", function(d) { return x_scale_bar(d.model); })
       .attr("width", x_scale_bar.rangeBand()/2)
       .attr("y", function(d) { return y0_bar(d.bias); })
-    .attr("height", function(d,i,j) { return height - y0_bar(d.bias); }); 
+      .attr("fill", function(d) { return color("Bias"); }) // custom choice
+      .attr("height", function(d,i,j) { return height - y0_bar(d.bias); }); 
 
   bars.append("rect")
       .attr("class", "bar2")
       .attr("x", function(d) { return x_scale_bar(d.model) + x_scale_bar.rangeBand()/2; })
       .attr("width", x_scale_bar.rangeBand() / 2)
       .attr("y", function(d) { return y1_bar(d.variance); })
-    .attr("height", function(d,i,j) { return height - y1_bar(d.variance); });   
+      .attr("fill", function(d) { return color("Variance"); }) // custom choice
+      .attr("height", function(d,i,j) { return height - y1_bar(d.variance); });   
 }
 
 function clearBars() {
