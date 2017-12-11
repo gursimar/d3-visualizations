@@ -58,6 +58,7 @@ function drawData(data_t){
 	// Exit
 	simar.exit().remove();
 	clearCurve()
+	clearBoxes()
 }
 
 function drawCurve(data_t) {

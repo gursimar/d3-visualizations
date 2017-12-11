@@ -103,10 +103,10 @@ function computeErrorTrain(){
 	return error
 }
 
-function computeErrorTrainWN(){
+function computeErrorTrainWN(){ //WRONG
 	// computes error between y_orig_with_noise and y_predicted
 	var y_orig =  generateData(x,w,0)['y']
-	var y_hat = rResult['yhat']
+	var y_hat = rResult['yhat'] 
 	var error = compute_RMSE(y_orig, y_hat)
 	return error
 }
