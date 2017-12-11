@@ -75,7 +75,7 @@ function drawCurve(data_t) {
                 .attr("d", lineFunction(rData))
                 .attr("stroke", function(d) { return color("Regression line"); })
                 //.attr("stroke", "red")
-                .attr("stroke-width", 2)
+                .attr("stroke-width", 3)
                 .attr("fill", "none");
 }
 
@@ -91,7 +91,8 @@ function makeLegend() {
 	  .attr("x", 0 + 60)
 	  .attr("width", 18)
 	  .attr("height", 18)
-	  .style("fill", color);
+	  .style("fill", color)
+      //.attr("fill-opacity", "0.9") // custom choice      
 
 	legend.append("text")
 	  .attr("x", 0 + 60+ 24)

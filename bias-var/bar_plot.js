@@ -105,17 +105,19 @@ function reDrawBars() {
   bars.append("rect")
       .attr("class", "bar1")
       .attr("x", function(d) { return x_scale_bar(d.model); })
-      .attr("width", x_scale_bar.rangeBand()/2)
+      .attr("width", x_scale_bar.rangeBand()/2.5)
       .attr("y", function(d) { return y0_bar(d.bias); })
       .attr("fill", function(d) { return color("Bias"); }) // custom choice
+      .attr("fill-opacity", "0.8") // custom choice      
       .attr("height", function(d,i,j) { return height - y0_bar(d.bias); }); 
 
   bars.append("rect")
       .attr("class", "bar2")
-      .attr("x", function(d) { return x_scale_bar(d.model) + x_scale_bar.rangeBand()/2; })
-      .attr("width", x_scale_bar.rangeBand() / 2)
+      .attr("x", function(d) { return x_scale_bar(d.model) + x_scale_bar.rangeBand()/2.5; })
+      .attr("width", x_scale_bar.rangeBand() / 2.5)
       .attr("y", function(d) { return y1_bar(d.variance); })
       .attr("fill", function(d) { return color("Variance"); }) // custom choice
+      .attr("fill-opacity", "0.8") // custom choice      
       .attr("height", function(d,i,j) { return height - y1_bar(d.variance); });   
 }
 

@@ -52,7 +52,7 @@
     	</div>
     </div>
     <div class="col-sm-5">
-    	<div style="position:relative; left:50px;" id ="plot-2">
+    	<div style="position:relative; left:40px;" id ="plot-2">
     	</div>
     	<br>
     	<div id ="plot-3">
@@ -112,6 +112,9 @@
 	var legend_main = svg.append("g").attr("class", "legend_main")
 	
 	var color = d3.scale.category10();;
+	var color = d3.scale.ordinal()
+  	.domain(["Data Points", "Regression line", "Bias", "Variance"])
+  	.range(["#377eb8", "#e7298a" , "#8dd3c7", "#bebada"])
 	var scale_x = []
 	var scale_y = []
 
