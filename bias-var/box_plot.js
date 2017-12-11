@@ -3,6 +3,8 @@
   HEIGHT = 350
 
   var b_data = []
+  var b_data_scaled = []
+
   var errors = []
 
   b_HEIGHT = HEIGHT
@@ -24,7 +26,7 @@ function reDrawBoxes() {
   d3.select("#plot-2").selectAll("svg").remove();
   chart.domain([min, max]); // CHECK THIS
   var svg = d3.select("#plot-2").selectAll("svg")
-      .data(b_data)
+      .data(b_data_scaled)
       .enter().append("svg")
       .attr("class", "box")
       .attr("width", b_width + b_margin.left + b_margin.right)
@@ -38,5 +40,7 @@ function clearBoxes() {
   max = 0
   min = 100000
   b_data = []
+  b_data_scaled = []
   d3.select("#plot-2").selectAll("svg").remove();
 }
+

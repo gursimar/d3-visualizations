@@ -82,25 +82,6 @@ function generateBiasVarData(){
   var avg_var = Math.abs(d3.mean(bv_arr['variances']))
 
 
-  // max no of errors cant be more than 4
-  if (b_data.length >=4) {
-    // remove the first element
-    b_data.splice(0,1)
-  }
-
-  errors = changeVariance(bv_arr['yhats'],avg_var)
-  console.log(bv_arr['yhats'])
-  // STUFF FOR BOX PLOT
-  b_data.push(errors)
-
-  if (d3.max(errors) > max){
-    max = d3.max(errors)
-  }
-  if (d3.min(errors) < min){
-    min = d3.min(errors)
-  }
-  reDrawBoxes()
-
   // STUFF FOR BAR PLOT
   if (bar_data.length >=4) {
     // remove the first element
@@ -113,16 +94,25 @@ function generateBiasVarData(){
     'variance':Math.round(avg_var)
     })
 
-/*
-  if (avg_bias > y0_max){
-    y0_max = avg_bias
-  }
-  if (avg_var > y1_max){
-    y1_max = avg_var
-  }
-  */
-  //console.log(bar_data)
   reDrawBars()
+
+
+
+  // STUFF FOR BOX PLOT
+  // max no of errors cant be more than 4
+  if (b_data.length >=4) {
+    // remove the first element
+    b_data.splice(0,1)
+  }
+
+  errors = bv_arr['yhats']
+
+  // This function scales data and maintains shape of boxes in box plots
+  b_data.push(errors)
+  scaleVariance(avg_var)
+  errors = b_data_scaled[b_data_scaled.length-1]
+  reDrawBoxes()
+
 
   // to display stuff
   var stats2 = computeMeanStd([errors])
@@ -136,7 +126,7 @@ function generateBiasVarData(){
 function computeMeanStd(errors){
   var result_mean = []
   var result_var = []
-  for (i=0; i<errors.length; i++){
+  for (var i=0; i<errors.length; i++){
     result_mean.push(d3.mean(errors[i]))
     result_var.push(d3.variance(errors[i]))    
   }
@@ -150,18 +140,18 @@ function changeVariance(data_tat, var_tat){
   temp_simar = meanTransformData(data_tat, mean_simar, 0)
   //console.log(d3.variance(temp_simar))
   new_temp_simar = []
-  for (i=0; i<temp_simar.length;i++){
+  for (var i=0; i<temp_simar.length;i++){
     new_temp_simar.push(temp_simar[i]*Math.sqrt(var_tat))
   }
-  result_simar = meanTransformData(new_temp_simar, mean_simar, 1)
+  result_simar_hurr = meanTransformData(new_temp_simar, mean_simar, 1)
   //console.log(d3.variance(result_simar))
-  return result_simar
+  return result_simar_hurr
 }
 
 function meanTransformData(data_simar, mean_simar, mode) {
   var result_simar = []
   var var_old = d3.variance(data_simar)
-  for (i=0;i<data_simar.length; i++) {
+  for (var i=0;i<data_simar.length; i++) {
     if (mode==0) {
       result_simar.push((data_simar[i] - mean_simar)/Math.sqrt(var_old))
     }
@@ -173,6 +163,64 @@ function meanTransformData(data_simar, mean_simar, mode) {
   return result_simar
 
 }
+
+function scaleVariance(avg_var){
+  // This is just to make the variance same as in bar chart
+  // This is done because the calculation method of variance 
+  /// for box plot squashes it
+  // There is no good way to preserve variance, this is an easy hack
+  // errors = changeVariance(bv_arr['yhats'],avg_var)
+
+  // However, we need to scale variance as box plots looks v squashed
+  // since scale of bias and variance is v different for some functions
+  // Hence I'm going to implement a scaling factor which will
+  // preserve the relative variance and make it at the same scale as of bias
+
+  // Scale variance
+  var old_var = []
+  for (var i=0; i< b_data.length;i++){
+    var errors = b_data[i]
+    //old_var.push(d3.variance(errors))
+    old_var.push(bar_data[i].variance)
+
+    if (d3.max(errors) > max){
+      max = d3.max(errors)
+    }
+    if (d3.min(errors) < min){
+      min = d3.min(errors)
+    }
+
+  }
+  console.log(old_var)
+
+  console.log("simar")
+  // choose a scaling factor
+  scaling_factor = (max-min) * 0.4
+  console.log(max-min)
+  console.log(scaling_factor)
+
+  b_data_new = []
+  new_vars = []
+  for (var i=0; i<b_data.length;i++){
+    var new_var = old_var[i] * scaling_factor
+    console.log("hello")
+    console.log(new_var)
+    new_vars.push(new_var)
+    var errors_simar = changeVariance(b_data[i],new_var)
+
+    if (d3.max(errors_simar) > max){
+      max = d3.max(errors_simar)
+    }
+    if (d3.min(errors_simar) < min){
+      min = d3.min(errors_simar)
+    }
+
+    b_data_new.push(errors_simar)
+  }
+  console.log(new_vars)
+  b_data_scaled = b_data_new
+}
+
 
 
 function generateBiasVarData2(){
