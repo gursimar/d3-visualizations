@@ -191,20 +191,22 @@ function scaleVariance(avg_var){
     }
 
   }
-  console.log(old_var)
 
-  console.log("simar")
+  var fact = d3.mean(old_var)
+  //console.log(old_var)
+
+  //console.log("simar")
   // choose a scaling factor
-  scaling_factor = (max-min) * 0.4
-  console.log(max-min)
-  console.log(scaling_factor)
+  scaling_factor = (max-min) / fact *15
+  //console.log(max-min)
+  //console.log(scaling_factor)
 
   b_data_new = []
   new_vars = []
   for (var i=0; i<b_data.length;i++){
     var new_var = old_var[i] * scaling_factor
-    console.log("hello")
-    console.log(new_var)
+    //console.log("hello")
+    //console.log(new_var)
     new_vars.push(new_var)
     var errors_simar = changeVariance(b_data[i],new_var)
 
