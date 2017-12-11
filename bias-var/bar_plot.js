@@ -82,9 +82,12 @@ function reDrawBars() {
     .call(yAxisLeft)
 
   .append("text")
-    .attr("y", 6)
+    .attr("y", -10)
+    .attr("x", -140)
+    .attr("class","label_chart")
     .attr("dy", "-2em")
-    .style("text-anchor", "end")
+    .attr("fill", "black")
+    .attr("transform", "rotate(-90)")
     .style("text-anchor", "end")
     .text("Bias");
   
@@ -95,8 +98,12 @@ function reDrawBars() {
     .call(yAxisRight)
 
   .append("text")
-    .attr("y", 6)
+    .attr("x", +147)
+    .attr("y", -8)
+    .attr("class","label_chart")
+    .attr("fill", "black")
     .attr("dy", "-2em")
+    .attr("transform", "rotate(90)")
     .attr("dx", "2em")
     .style("text-anchor", "end")
     .text("Variance");

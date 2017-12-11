@@ -114,12 +114,16 @@
 	var color = d3.scale.category10();;
 	var color = d3.scale.ordinal()
   	.domain(["Data Points", "Regression line", "Bias", "Variance"])
-  	.range(["#377eb8", "#e7298a" , "#8dd3c7", "#bebada"])
+  	.range(["#377eb8", "#e7298a" , "#6CC6B7", "#A8A2CD"])
 	var scale_x = []
 	var scale_y = []
 
 	data = createData()
 	showActualPicture()
+	learnDrawCurve(1)
+	learnDrawCurve(2)
+	learnDrawCurve(3)
+	learnDrawCurve(4)
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
