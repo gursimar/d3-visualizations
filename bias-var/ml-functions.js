@@ -129,6 +129,27 @@ function computeErrorGeneralization(){
 	return error
 }
 
+
+function standardizeData(data_simar) {
+	var mean_simar = d3.mean(data_simar)
+	for (i=0;i<data_simar.length; i++) {
+
+	}
+}
+
+function findDistStats(data_simar){
+	data_sim = data_simar.slice()
+	data_sim.sort()
+	var result = {
+		'95': d3.quantile(data_sim, 1),
+		'80': d3.quantile(data_sim, .80),
+		'20': d3.quantile(data_sim, .20),
+		'5': d3.quantile(data_sim, 0)
+	}
+
+	return result
+}
+
 ////////////////////////////////// UNSED FUNCTIONS ///////////////////////////////
 
 function gradientDescent (xDataMat, yDataMat) {
@@ -216,5 +237,6 @@ function fitData(data){
 	}
 	return result
 }
+
 
 

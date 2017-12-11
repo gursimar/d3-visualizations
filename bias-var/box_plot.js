@@ -15,63 +15,97 @@
     .width(b_width)
     .height(b_height);
     
-  var min = 0//d3.min(errors)
-  var max = 50//d3.max(errors)
+  var min = 100000//d3.min(errors)
+  var max = 0//d3.max(errors)
 
+
+function generateBiasVarData(){
+  // learn multiple models and aggregate their errors
+  var errors = []
+  var mc_iter = 500
+  nf_t = nf*10
+  // it uses same x and nf
+  var y_orig_t = generateData(x,w,nf_t)['y']
+  for(it=0;it<mc_iter;it++){
+      var data_t = generateData(x, w, nf_t) // gives data as array of dict{x,y}
+      y_orig_t = data_t['y'] // BE CAREFUL FOR THIS
+      var rResult_t = fitDataClosedForm(data_t, model_degree)
+      var y_hat_t = rResult_t['yhat']
+      errors.push(compute_RMSE(y_orig_t, y_hat_t))
+  }
+  // max no of errors cant be more than 4
+  if (b_data.length >=4) {
+    // remove the first element
+    b_data.splice(0,1)
+  }
+  b_data.push(errors)
+
+  if (d3.max(errors) > max){
+    max = d3.max(errors)
+  }
+  if (d3.min(errors) < min){
+    min = d3.min(errors)
+  }
+
+  reDrawBoxes()
+
+  // to display stuff
+  var stats = computeMeanStd(b_data)
+  console.log(stats)
+  console.log("Mean (bias) -> " + stats[0])
+  console.log("Variance (var) -> " + stats[1])
+}
 
 function generateBiasVarData2(){
   // learn multiple models and aggregate their errors
   var errors = []
   var mc_iter = 100
 
-  // it uses same x and nf
-  var y_orig_t = generateData(x,w,0)['y']
-  for(it=0;it<mc_iter;it++){
-      var data_t = generateData(x, w, nf) // gives data as array of dict{x,y}
-      var rResult_t = fitDataClosedForm(data_t, model_degree)
-      var y_hat_t = rResult_t['yhat']
-      errors.push(compute_RMSE(y_orig_t, y_hat_t))
-  }
-  b_data.push(errors)
-  reDrawBoxes()
-
-  // to display stuff
-  console.log(b_data)
-  var stats = computeMeanStd(errors)
-  console.log("Mean (bias) -> " + stats[0])
-  console.log("Variance (var) -> " + stats[1])
-}
-
-function generateBiasVarData(){
-  // learn multiple models and aggregate their errors
-  var errors = []
-  var mc_iter = 100
-
-  var x_new = linspace(-50,50,1)
+  var x_new = linspace(-4,12,0.1)
   var y_test_gen = generateData(x_new,w,0)['y']
+  nf_t = nf*20
 
   // it uses same x and nf
   for(it=0;it<mc_iter;it++){
-      var data_t = generateData(x, w, nf) // gives data as array of dict{x,y}
-      var rResult_t = fitDataClosedForm(data_t, model_degree)
-
-      var y_hat_t = generateData(x_new,rResult.model,0)['y'] 
+      var data_ta = generateData(x, w, nf_t) // gives data as array of dict{x,y}
+      var rResult_t = fitDataClosedForm(data_ta, model_degree)
+      var y_hat_t = generateData(x_new,rResult_t.model,0)['y'] 
       errors.push(compute_RMSE(y_test_gen, y_hat_t))
   }
-  b_data.push(errors)
-  if (d3.max(errors) > max){
-    max = d3.max(errors)
+  
+  // max no of errors cant be more than 4
+  if (b_data.length >=4) {
+    // remove the first element
+    b_data.splice(0,1)
   }
+  b_data.push(errors)
+
+  var max_sub = d3.max(errors)
+  var min_sub = d3.min(errors)
+  
+  //var err_st = findDistStats(errors)
+  //var max_sub = err_st['95']
+  //var min_sub = err_st['5']
+
+  if (max_sub > max){
+    max = max_sub
+  }
+  if (min_sub < min){
+    min = min_sub
+  }
+
   reDrawBoxes()
 
   // to display stuff
-  var stats = computeMeanStd(errors)
-  console.log(errors)
+  var stats = computeMeanStd(b_data)
+  //console.log(errors)
   console.log("Mean (bias) -> " + stats[0])
   console.log("Variance (var) -> " + stats[1])
 }
 
 function reDrawBoxes() {
+
+  d3.select("#plot-2").selectAll("svg").remove();
   chart.domain([min, max]); // CHECK THIS
   var svg = d3.select("#plot-2").selectAll("svg")
       .data(b_data)
@@ -85,13 +119,18 @@ function reDrawBoxes() {
 }
 
 function computeMeanStd(errors){
-  var result = []
-  result.push(d3.mean(errors))
-  result.push(d3.variance(errors))
-  return result
+  var result_mean = []
+  var result_var = []
+  for (i=0; i<errors.length; i++){
+    result_mean.push(d3.mean(errors[i]))
+    result_var.push(d3.variance(errors[i]))    
+  }
+  return [result_mean, result_var]
 }
 
 function clearBoxes() {
+  max = 0
+  min = 100000
   b_data = []
   d3.select("#plot-2").selectAll("svg").remove();
 }

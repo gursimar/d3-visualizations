@@ -58,7 +58,6 @@ function drawData(data_t){
 	// Exit
 	simar.exit().remove();
 	clearCurve()
-	clearBoxes()
 }
 
 function drawCurve(data_t) {
@@ -114,11 +113,14 @@ function learnDrawCurve(p){
 	rResult = fitDataClosedForm(data, model_degree)	
 	drawCurve({x:data.x, y:rResult.yhat})
 
-	console.log("Model -> " + rResult.model)
-	console.log("Train error -> " + computeErrorTrain())
-	console.log("Train error (/w noise) -> " + computeErrorTrainWN())
+	// i can remove it afterwards
+	generateBiasVarData()
+
+	//console.log("Model -> " + rResult.model)
+	//console.log("Train error -> " + computeErrorTrain())
+	//console.log("Train error (/w noise) -> " + computeErrorTrainWN())
 	//console.log("Test error - " + computeErrorTest())
-	console.log("Generalization error -> " + computeErrorGeneralization())
+	//console.log("Generalization error -> " + computeErrorGeneralization())
 }
 
 
