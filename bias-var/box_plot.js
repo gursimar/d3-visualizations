@@ -34,8 +34,6 @@ function reDrawBoxes() {
       .call(chart);
 }
 
-
-
 function clearBoxes() {
   max = 0
   min = 100000

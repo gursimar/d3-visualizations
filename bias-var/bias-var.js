@@ -88,7 +88,7 @@ function generateBiasVarData(){
     b_data.splice(0,1)
   }
 
-  errors = bv_arr['yhats']
+  errors = changeVariance(bv_arr['yhats'],avg_var)
   console.log(bv_arr['yhats'])
   // STUFF FOR BOX PLOT
   b_data.push(errors)
@@ -125,10 +125,10 @@ function generateBiasVarData(){
   reDrawBars()
 
   // to display stuff
-  var stats = computeMeanStd([errors])
+  var stats2 = computeMeanStd([errors])
   //console.log(stats)
-  console.log("Mean (bias) -> " + stats[0])
-  console.log("Variance (var) -> " + stats[1])
+  console.log("Mean (bias) -> " + stats2[0])
+  console.log("Variance (var) -> " + stats2[1])
   console.log("Mean (bias) -> " + avg_bias)
   console.log("Variance (var) -> " + avg_var)
 }
@@ -142,6 +142,38 @@ function computeMeanStd(errors){
   }
   return [result_mean, result_var]
 }
+
+function changeVariance(data_tat, var_tat){
+  //console.log(var_tat)
+  //console.log(d3.variance(data_tat))
+  mean_simar = d3.mean(data_tat)
+  temp_simar = meanTransformData(data_tat, mean_simar, 0)
+  //console.log(d3.variance(temp_simar))
+  new_temp_simar = []
+  for (i=0; i<temp_simar.length;i++){
+    new_temp_simar.push(temp_simar[i]*Math.sqrt(var_tat))
+  }
+  result_simar = meanTransformData(new_temp_simar, mean_simar, 1)
+  //console.log(d3.variance(result_simar))
+  return result_simar
+}
+
+function meanTransformData(data_simar, mean_simar, mode) {
+  var result_simar = []
+  var var_old = d3.variance(data_simar)
+  for (i=0;i<data_simar.length; i++) {
+    if (mode==0) {
+      result_simar.push((data_simar[i] - mean_simar)/Math.sqrt(var_old))
+    }
+    else {
+      result_simar.push(data_simar[i] + mean_simar)
+    }
+    
+  }
+  return result_simar
+
+}
+
 
 function generateBiasVarData2(){
   // learn multiple models and aggregate their errors

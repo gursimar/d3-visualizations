@@ -81,9 +81,9 @@ function fitDataClosedForm(data, model_degree){
 
 function splitData(data, r){
 	// splits data into train and test
-
+	// not used right now; not required for this demo
+	// but can be useful to implement later
 }
-
 
 // Error functions
 
@@ -130,66 +130,20 @@ function computeErrorGeneralization(){
 }
 
 
-function standardizeData(data_simar) {
-	var mean_simar = d3.mean(data_simar)
-	for (i=0;i<data_simar.length; i++) {
-
-	}
-}
-
-function findDistStats(data_simar){
+function findQuantiles(data_simar){
 	data_sim = data_simar.slice()
 	data_sim.sort()
 	var result = {
-		'95': d3.quantile(data_sim, 1),
+		'95': d3.quantile(data_sim, 0.95),
 		'80': d3.quantile(data_sim, .80),
 		'20': d3.quantile(data_sim, .20),
-		'5': d3.quantile(data_sim, 0)
+		'5': d3.quantile(data_sim, 0.5)
 	}
 
 	return result
 }
 
 ////////////////////////////////// UNSED FUNCTIONS ///////////////////////////////
-
-function gradientDescent (xDataMat, yDataMat) {
-    var N = data.length, X = [], Y = [];
-    this.dim = data[0].length;
-
-    console.log(X)
-    console.log(Y)
-    
-    this.theta = [];
-    
-    for (var d = 0; d < this.dim; ++d) {
-        this.theta.push(Math.random());
-    }
-    
-    for (var k = 0; k < this.iterations; ++k) {
-        var Vx = this.grad(X, Y, this.theta);
-        
-        for(var d = 0; d < this.dim; ++d) {
-            this.theta[d] = this.theta[d] - this.alpha * Vx[d];
-        }
-        
-        if(this.trace) {
-            console.log('cost at iteration ' + k + ': ' + this.cost(X, Y, this.theta));
-            console.log(this.theta)
-        }
-    }
-    
-    return {
-        theta: this.theta,
-        dim: this.dim,
-        cost: this.cost(X, Y, this.theta),
-        config: {
-            alpha: this.alpha,
-            lambda: this.lambda,
-            iterations: this.iterations 
-        }
-    };
-}
-
 function leastSquaresGradient(X,y,theta){
 	// https://www.robinwieruch.de/linear-algebra-matrix-javascript/
 	// This link has simple idea to code the gradient
@@ -219,7 +173,8 @@ function transformDataReg(data,n){
 	return result
 }
 
-// regression function
+// regression function - this library has a bug; i notified the developer
+// i have implemented my own function above
 function fitData(data){
 	var regressor = new jsregression.LinearRegression({
 		alpha: 0.001,
