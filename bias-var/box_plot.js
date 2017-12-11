@@ -8,8 +8,8 @@
   var errors = []
 
   b_HEIGHT = HEIGHT
-  var b_margin = {top: 20, right: 50, bottom: 30, left: 50},
-    b_width = 120 - b_margin.left - b_margin.right,
+  var b_margin = {top: 20, right: 45, bottom: 30, left: 45},
+    b_width = 110 - b_margin.left - b_margin.right,
     b_height = b_HEIGHT - b_margin.top - b_margin.bottom;
 
   var chart = d3.box()
