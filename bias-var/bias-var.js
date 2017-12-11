@@ -89,7 +89,7 @@ function generateBiasVarData(){
   }
 
     bar_data.push({
-    'model':'simar' + model_degree,
+    'model':'Degree ' + model_degree,
     'bias':Math.round(avg_bias),
     'variance':Math.round(avg_var)
     })

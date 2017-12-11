@@ -11,6 +11,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "mathjs": "^3.17.0",
+    "d3": "v3.5.17"
   }
 }
