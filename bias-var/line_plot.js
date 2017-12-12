@@ -23,7 +23,7 @@ function drawXY(x_min, x_max, y_min, y_max) {
 			.attr("x", width_curve)
 			.attr("y", -6)
 			.style("text-anchor", "end")
-			.text("x axis");
+			.text("Independent variable (x)");
 
 	y_axis.call(yAxis)
 		.append("text")
@@ -32,7 +32,7 @@ function drawXY(x_min, x_max, y_min, y_max) {
 			.attr("y", 6)
 			.attr("dy", ".71em")
 			.style("text-anchor", "end")
-			.text("y axis");	
+			.text("Dependent variable (y)");	
 }
 
 function drawData(data_t){
