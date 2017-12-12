@@ -47,8 +47,35 @@ $("#zoom").hover(function(){
 
 // we can capture events d3 way as well!!
 d3.select('#polydegree').on('change', function() {
-    console.log("NEW P", this.value)
+    //console.log("NEW P", this.value)
     var new_text = 'POLYNOMIAL DEGREE (' + this.value + ')'
     $('#poly_text').text(new_text)
     learnDrawCurve(this.value)
+})
+
+// we can capture events d3 way as well!!
+d3.select('#noisedegree').on('change', function() {
+    //console.log("NEW P", this.value)
+    var new_text = 'Noise (' + this.value + ')'
+    $('#noise_text').text(new_text)
+    nf = this.value
+	data = createData()
+	clearBoxes();
+	clearBars();
+	drawData(data);    
+    //learnDrawCurve(this.value)
+})
+
+// we can capture events d3 way as well!!
+d3.select('#sampledegree').on('change', function() {
+    //console.log("NEW P", this.value)
+    var new_text = 'Concentration (' + this.value + ')'
+    $('#sample_text').text(new_text)
+    var factor = 17/this.value
+    x = linspace(-7,10,factor)
+	data = createData()
+	clearBoxes();
+	clearBars();
+	drawData(data);    
+    
 })

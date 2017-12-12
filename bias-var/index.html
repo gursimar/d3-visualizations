@@ -38,12 +38,18 @@
 			</div-->
     	</div>
     	<div>
-	    	<h4 id ="noise_text">NOISE (200)</h4>
+	    	<h4 id ="sample_text">Concentration (200)</h4>
+		    	<p style="font:15px;">Amount of data to sample?</p>
+	            <input id="sampledegree" class="mdl-slider mdl-js-slider" type="range" min="50" max="500" step="150" value="200" tabindex="0"> 
+    	</div>
+
+    	<div>
+	    	<h4 id ="noise_text">Noise (200)</h4>
 		    	<p style="font:15px;">How much noise?</p>
-	            <input id="noisedegree" class="mdl-slider mdl-js-slider" type="range" min="100" max="400" step="100" value="200" tabindex="0"> 
+	            <input id="noisedegree" class="mdl-slider mdl-js-slider" type="range" min="0" max="1000" step="200" value="200" tabindex="0"> 
     	</div>
     	<br>
-    	<div>
+    	<div style="margin-top:50px">
 	    	<h4 id ="poly_text">POLYNOMIAL DEGREE (2)</h4>
 		    	<p style="font:15px;">What degree basis you want to fit?</p>
 	            <input id="polydegree" class="mdl-slider mdl-js-slider" type="range" min="1" max="4" step="1" value="2" tabindex="0"> 
@@ -89,12 +95,16 @@
     	</div>
     </div>
     <div class="col-sm-5">
-    	<div style="position:relative; left:42px;" id ="plot-2">
+    	<div style="position:relative; left:65px;" id ="plot-2">
     	</div>
     	<br>
-    	<div id ="plot-3">
+    	<div style="margin-top:-20px; margin-left:20px;" id ="plot-3">
     	</div>
     </div>
+  </div>
+  <div>
+
+  		Text will go here
   </div>
 </div>
 
@@ -114,7 +124,7 @@
 <script src="bar_plot.js"></script>
 
 <script>
-	var x = linspace(-7,10,0.1)
+	var x = linspace(-7,10,0.085)
 	var w = []
 	var w_all = [
 		[-5,50,1],
