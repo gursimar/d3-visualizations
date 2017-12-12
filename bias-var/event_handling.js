@@ -44,6 +44,21 @@ $("#zoom").hover(function(){
 	showActualPicture()	
 });
 
+/*
+$("#help").hover(function(){
+	$(this).css("font-size", "26px");
+	
+},function(){
+	$(this).css("font-size", "25px");
+});
+*/
+
+$("#help").click(function(){
+	console.log("click")
+	introJs().start();
+}) 
+
+
 
 // we can capture events d3 way as well!!
 d3.select('#polydegree').on('change', function() {
