@@ -16,7 +16,7 @@
 <div class="container-fluid">
   <div class="row">
     <div style="position:relative; left:80px;" class="col-sm-2">
-    	<div style="margin-bottom:30px; margin-top:40px;">
+    	<div style="margin-bottom:30px; margin-top:20px;">
 	    	<h4>DATASET</h4>
 	    	<p style="font:15px;">Which dataset you want to use?</p>
 	        <div class="dataset-list">
@@ -37,9 +37,14 @@
 			  <button type="button" id="data_3" class="btn btn-default">Cmplx</button>
 			</div-->
     	</div>
-
     	<div>
-	    	<h4 id ="poly_text">POLYNOMIAL DEGREE (p)</h4>
+	    	<h4 id ="noise_text">NOISE (200)</h4>
+		    	<p style="font:15px;">How much noise?</p>
+	            <input id="noisedegree" class="mdl-slider mdl-js-slider" type="range" min="100" max="400" step="100" value="200" tabindex="0"> 
+    	</div>
+    	<br>
+    	<div>
+	    	<h4 id ="poly_text">POLYNOMIAL DEGREE (2)</h4>
 		    	<p style="font:15px;">What degree basis you want to fit?</p>
 	            <input id="polydegree" class="mdl-slider mdl-js-slider" type="range" min="1" max="4" step="1" value="2" tabindex="0"> 
 
@@ -53,23 +58,32 @@
 			</div-->
 
     	</div>
-		<br><br><br>
+		<!--br><br><br>
     	<div>
 	    	<h4>Bias/Variance</h4>
-	    	<!--p>Learn 100 models</p-->
 			<div class="btn-group">
 			  <button type="button" class="btn btn-default" onclick="generateBiasVarData()">Go</button>
 			</div>
-    	</div>
+    	</div-->
 
     </div>
     <div class="col-sm-5">
-    	<div style="position:relative; left:82px;margin-top:30px;" id ="plot-1">
+    	<div style="position:relative; left:82px;margin-top:25px;" id ="plot-1">
     		<div style="position:absolute;top:250px; left:520px">
 				<!--button type="button" class="btn btn-default" onclick="showBigPicture()">Big pic</button>
 				<button type="button" class="btn btn-default" onclick="showActualPicture()">Actual pic</button-->
-
 				<span id="zoom" class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
+			</div>
+			<div  style="position:absolute;top:350px;left:80px;width:75%;text-align:justify;font-size:16px">
+				The scatter plot at the top represent one instance of sampled data and regression line which fits it.
+				The plots on the right (box and bar) is constructed by repeatedly sampling data and fitting regression lines. The box plot on the top-right shows the distribution of residuals. The bar chart on the right represent the bias and variance of residuals. Each bar/ box corresponds to a particular degree of regression line (shown on x-axis).<br><br>Steps:
+				<ul style="font-size:14px;margin-top:10px">
+					<li>Choose a dataset from the pane on the left.</li>
+					<li>Analyze bias-variance tradeoff by changing data/ noise/ samples.</li>
+					<li>Investiage different fits by changing degree of polynomial.</li>
+					<li>Use the zoom-out symbol to see generalizability of your model</li>
+				</ul>
+
 			</div>
 
     	</div>

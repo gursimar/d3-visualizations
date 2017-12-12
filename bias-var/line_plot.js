@@ -58,6 +58,14 @@ function drawData(data_t){
 	// Exit
 	simar.exit().remove();
 	clearCurve()
+	learnDrawCurve(1)
+	generateBiasVarData()
+	learnDrawCurve(2)
+	generateBiasVarData()
+	learnDrawCurve(3)
+	generateBiasVarData()
+	learnDrawCurve(4)
+	generateBiasVarData()
 }
 
 function drawCurve(data_t) {
@@ -118,7 +126,7 @@ function learnDrawCurve(p){
 	drawCurve({x:data.x, y:rResult.yhat})
 
 	// i can remove it afterwards
-	generateBiasVarData()
+	//generateBiasVarData()
 	makeLegend()
 	//console.log("Model -> " + rResult.model)
 	//console.log("Train error -> " + computeErrorTrain())
