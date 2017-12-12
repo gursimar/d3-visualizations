@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-blue.min.css" />
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<link rel="stylesheet" href="bower_components/intro.js/introjs.css"/>
 <link rel="stylesheet" href="styles.css">
 
 <body>
@@ -15,8 +16,8 @@
 </div>
 <div class="container-fluid">
   <div class="row">
-    <div style="position:relative; left:80px;" class="col-sm-2">
-    	<div style="margin-bottom:30px; margin-top:20px;">
+    <div style="position:relative; left:80px;" class="col-sm-2" data-step="9" data-intro='Tinker with these parameters and see how bias/ variance tardeoff changes.'>
+    	<div style="margin-bottom:30px; margin-top:20px;" data-step="1" data-intro='Start by choose a dataset here!'>
 	    	<h4>DATASET</h4>
 	    	<p style="font:15px;">Which dataset you want to use?</p>
 	        <div class="dataset-list">
@@ -37,22 +38,24 @@
 			  <button type="button" id="data_3" class="btn btn-default">Cmplx</button>
 			</div-->
     	</div>
-    	<div>
-	    	<h4 id ="sample_text">Concentration (200)</h4>
-		    	<p style="font:15px;">Amount of data to sample?</p>
-	            <input id="sampledegree" class="mdl-slider mdl-js-slider" type="range" min="50" max="500" step="150" value="200" tabindex="0"> 
-    	</div>
+    	<div data-step="5" data-intro='Similarly try different values of noise and concentration and observe how the regression model behaves. Again, you can use the zoom button to see the big picture.'>
+	    	<div>
+		    	<h4 id ="sample_text">Concentration (200)</h4>
+			    	<p style="font:15px;">Amount of data to sample?</p>
+		            <input id="sampledegree" class="mdl-slider mdl-js-slider" type="range" min="50" max="500" step="150" value="200" tabindex="0"> 
+	    	</div>
 
-    	<div>
-	    	<h4 id ="noise_text">Noise (200)</h4>
-		    	<p style="font:15px;">How much noise?</p>
-	            <input id="noisedegree" class="mdl-slider mdl-js-slider" type="range" min="0" max="1000" step="200" value="200" tabindex="0"> 
+	    	<div>
+		    	<h4 id ="noise_text">Noise (200)</h4>
+			    	<p style="font:15px;">How much noise?</p>
+		            <input id="noisedegree" class="mdl-slider mdl-js-slider" type="range" min="0" max="1000" step="200" value="200" tabindex="0"> 
+	    	</div>
     	</div>
     	<br>
-    	<div style="margin-top:50px">
-	    	<h4 id ="poly_text">POLYNOMIAL DEGREE (2)</h4>
+    	<div style="margin-top:50px" data-step="3" data-intro='You can choose the degree of polynomial which fits the data using this slider. If you data is more complex, you should choose a high degree polynomial to correctly model it. However, high degree polynomails are also prone to overfitting.'>
+	    	<h4 id ="poly_text">POLYNOMIAL DEGREE (4)</h4>
 		    	<p style="font:15px;">What degree basis you want to fit?</p>
-	            <input id="polydegree" class="mdl-slider mdl-js-slider" type="range" min="1" max="4" step="1" value="2" tabindex="0"> 
+	            <input id="polydegree" class="mdl-slider mdl-js-slider" type="range" min="1" max="4" step="1" value="4" tabindex="0"> 
 
 			<!--div class="btn-group">
 			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(1);">1</button>
@@ -74,8 +77,8 @@
 
     </div>
     <div class="col-sm-5">
-    	<div style="position:relative; left:82px;margin-top:25px;" id ="plot-1">
-    		<div style="position:absolute;top:250px; left:520px">
+    	<div style="position:relative; left:82px;margin-top:25px;" id ="plot-1" data-step="2" data-intro='The sampled data is displayed in this scatter plot. Also, it fits a regression line with polynomail basis of degree (p).'>
+    		<div style="position:absolute;top:250px; left:520px" data-step="4" data-intro='Hover on this to see how your model perform on data points it did not see while training. You will observe that a high degree polynomial overfits the data.'>
 				<!--button type="button" class="btn btn-default" onclick="showBigPicture()">Big pic</button>
 				<button type="button" class="btn btn-default" onclick="showActualPicture()">Actual pic</button-->
 				<span id="zoom" class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
@@ -94,17 +97,28 @@
 
     	</div>
     </div>
-    <div class="col-sm-5">
-    	<div style="position:relative; left:65px;" id ="plot-2">
+    <div class="col-sm-5" data-step="6" data-intro='These graph are computed by sampling data and fitting regression lines. When you do this, each time you get a different model due to noise in data. These plots are obtained by aggregating the data obtained in multiple runs.'>
+    	<div style="position:relative; left:65px;" id ="plot-2" data-step="7" data-intro='This plot is obtained by plotting the distribution of residuals. Each bar corresponds to a different degree of polynomail. Various stats on the bar is shown like median, inter-quatile-range. Observe that as you increase the polynomial degree, the median of bar goes down and the spread increases. These two things roughly corresponds to bias and variance.'>
     	</div>
     	<br>
-    	<div style="margin-top:-20px; margin-left:20px;" id ="plot-3">
+    	<div style="margin-top:-20px; margin-left:20px;" id ="plot-3" data-step="8" data-intro='Here we plot the bias and variance against the polynomail degree. Observe that as the polynomial degree increases, bias reduces and variance increases. Hence the tradeoff!!'>
     	</div>
     </div>
   </div>
-  <div>
-
-  		Text will go here
+  <div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div style="margin-left:-20px" class="col-sm-7">
+      <h5 class="question">What is polynomail regression?</h5>
+      <h5 class="question">What is bias-variance tradeoff?</h5>
+      <h5 class="question">How you compute the bias/ variance?</h5>
+      <h5 class="question">Scatter plot; how to interpret it?</h5>
+      <h5 class="question">Box plot; how to interpret it?</h5>
+      <h5 class="question">Bar plot; how to interpret it?</h5>
+      <h5 class="question">But, why you did not plot the bull's eye diagram?</h5>
+    </div>
+    <div class="col-sm-2">
+    </div>
   </div>
 </div>
 
@@ -114,6 +128,7 @@
 <script src="bower_components/d3/d3.js"></script>
 <script src="bower_components/mathjs/dist/math.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/intro.js/intro.js"></script>
 <!--script src="node_modules/js-regression/src/jsregression.js"></script-->
 <script src="ml-functions.js"></script>
 <script src="box.js"></script>
@@ -171,6 +186,7 @@
 	learnDrawCurve(2)
 	learnDrawCurve(3)
 	learnDrawCurve(4)
+	introJs().start();
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 

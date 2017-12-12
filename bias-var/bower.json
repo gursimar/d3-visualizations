@@ -13,6 +13,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "mathjs": "^3.17.0",
-    "d3": "v3.5.17"
+    "d3": "v3.5.17",
+    "intro.js": "^2.7.0"
   }
 }
