@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Learn one model</title>
+</head>
+<body>
+    <div class="container-fluid text-center">
+        <div class="col-sm-2 text-left">
+            <!--div class="sliderExample">
+                <strong>Sample data</strong>
+                <div class="sliders" ui-slider="slider.options" min="0" max="200" ng-model="demoVals.sliderExample1"></div>
+                <input type="text" ng-model="demoVals.sliderExample1" />
+            </div-->
+
+            <div>
+                 <button class="btn btn">Action</button>
+                <form>
+                  <fieldset>
+                    <legend>DATA SAMPLING</legend>
+                    <label>Function</label>
+                    <input type="text" ng-model="w">
+                    <label>Noise factor</label>
+                    <input type="text" ng-model="nf">
+                    <button class="btn btn-primary btn-mini" ng-click="displayData()">Sample data</button>
+
+
+                    <br><br><br><br>
+                    <legend>Fit function</legend>
+                    <label>Degree</label>
+                    <input type="text" ng-model="model_degree">
+                    <button class="btn btn-primary btn-mini" ng-click="displayRegLine()">Learn model</button>
+                  </fieldset>
+                </form>
+            </div>
+
+            <div>
+                <button class="btn btn-danger btn-mini" ng-click="setupd3()">Reset</button>
+            </div>
+        </div>
+
+        <div id = "chart_out" class="col-sm-6">
+        </div>
+
+        <div class="col-sm-2 text-left">
+        </div>
+    </div>
+</body>
+</html>

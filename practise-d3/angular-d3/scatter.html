@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style>
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+  fill: steelblue;
+}
+
+</style>
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css">
+
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="node_modules/mathjs/dist/math.js"></script>
+<script src="node_modules/js-regression/src/jsregression.js"></script>
+<!--<script src="node_modules/regression/dist/regression.js"></script>-->
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+
+
+<body>
+    <div class="container" ng-app="demo" ng-controller="demoController">
+    	simar
+		<slider ng-model="sliders.sliderValue" min="testOptions.min" step="testOptions.step" max="testOptions.max" value="testOptions.value"></slider>
+        <label for="sliderId">Slider Id:</label>
+        <input id="sliderId" type="text" ng-model="testOptions.sliderId">
+
+	</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>Column 1</h3>
+		<button type="button" class="btn">Basic</button>
+		<button type="button" class="btn btn-default">Default</button>
+		<button type="button" class="btn btn-primary">Primary</button>
+		<button type="button" class="btn btn-success">Success</button>
+		<button type="button" class="btn btn-info">Info</button>
+		<button type="button" class="btn btn-warning">Warning</button>
+		<button type="button" class="btn btn-danger">Danger</button>
+		<button type="button" class="btn btn-link">Link</button>    </div>
+    <div class="col-sm-4">
+      <h3>Column 2</h3>
+      <p>Lorem ipsum dolor..</p>
+      <p>Ut enim ad..</p>
+    </div>
+    <div class="col-sm-4">
+      <h3>Column 3</h3> 
+      <p>Lorem ipsum dolor..</p>
+      <p>Ut enim ad..</p>
+    </div>
+  </div>
+</div>
+<div id = "simar">
+    Hurrr
+</div>
+
+
+
+</body>
+
+<script>
+	var app = angular.module('demo', []);
+	var controller = function($scope){
+	};
+	
+	app.controller('demoController', ['$scope', controller]);
+
+    function gradientDescent (xDataMat, yDataMat) {
+        var N = data.length, X = [], Y = [];
+        this.dim = data[0].length;
+
+        console.log(X)
+        console.log(Y)
+        
+        this.theta = [];
+        
+        for (var d = 0; d < this.dim; ++d) {
+            this.theta.push(Math.random());
+        }
+        
+        for (var k = 0; k < this.iterations; ++k) {
+            var Vx = this.grad(X, Y, this.theta);
+            
+            for(var d = 0; d < this.dim; ++d) {
+                this.theta[d] = this.theta[d] - this.alpha * Vx[d];
+            }
+            
+            if(this.trace) {
+                console.log('cost at iteration ' + k + ': ' + this.cost(X, Y, this.theta));
+                console.log(this.theta)
+            }
+        }
+        
+        return {
+            theta: this.theta,
+            dim: this.dim,
+            cost: this.cost(X, Y, this.theta),
+            config: {
+                alpha: this.alpha,
+                lambda: this.lambda,
+                iterations: this.iterations 
+            }
+        };
+    }
+
+    function leastSquaresGradient(X,y,theta){
+    	// https://www.robinwieruch.de/linear-algebra-matrix-javascript/
+    	// This link has simple idea to code the gradient
+    	// Then I will have to modify the above GD function
+
+    }
+
+	// some utility functions
+	function linspace(a,b,d){
+		var result = []
+		var no = (b-a)/d + 1;
+		for (i=0;i<no;i++){
+			result[i] = a + i*d;
+		}
+		return result
+	}
+
+	function transformData(data){
+		var tData = []
+		for (i=0; i< data.x.length; i++){
+			tData[i] = {
+				x:data.x[i],
+				y:data.y[i]
+			}
+		}
+		return tData
+	}
+
+	function transformDataReg(data,n){
+		length = data.x.length
+		result = []
+		//result = {x:[],xy:[]}
+
+		// not using polybasis intentionally
+		for (i=0;i<length;i++){
+			x = data.x[i]
+			y = data.y[i]
+			//basis = [1]
+			basis = []
+			for (j=1;j<=n;j++){
+				basis.push(Math.pow(x,j))
+			}
+			//result.x.push(basis)
+			basis.push(y)
+			//result.xy.push(basis)
+			result.push(basis)
+		}
+		return result
+	}
+
+	// data generation functions
+	function polyBasis(x,n){
+		var resultMat = math.ones(x.length,1)
+		for (i=1;i<=n;i++){
+			nthBasis = math.matrix(x).map(function(d){return Math.pow(d,i)})
+			math.reshape(nthBasis,[x.length,1])
+			resultMat = math.concat(resultMat, nthBasis)
+		}
+		return resultMat;
+	}
+
+	function generateData(x,w,nf){
+		noise = math.ones(x.length).map(function(d){return Math.random()*nf})
+		
+		var xDataMat = polyBasis(x,w.length-1)
+
+		//const yDataMat = math.add(math.multiply(xDataMat,w),b)	//wx+b
+		const yDataMat = math.multiply(xDataMat,w)	//wx+b
+		yDataMatNoise = math.add(yDataMat, noise)
+
+		result = {
+			x:x,
+			y:yDataMatNoise.valueOf()
+		}
+		return result
+	}
+
+	function generateRandomData(){
+
+	}
+
+	// regression function
+	function fitData(data){
+		var regressor = new jsregression.LinearRegression({
+			alpha: 0.001,
+			iterations: 1000,
+			lambda: 0.0,
+			trace: true
+		});
+		var model = regressor.fit(data)
+		console.log(model)
+		//x_data = data.map()
+		yhat = regressor.transform(data)
+		result = {
+			model:model,
+			yhat:yhat
+		}
+		return result
+	}
+
+	function fitDataClosedForm(data, model_degree){
+		x = data.x
+		y = data.y
+		xDataMat = polyBasis(x,model_degree)
+		yDataMat = math.matrix(y)
+		math.reshape(yDataMat,[y.length,1])
+		//console.log(xDataMat)
+		//console.log(yDataMat)
+
+		var tr = math.transpose(xDataMat);
+		var tr_X = math.multiply(tr, xDataMat);
+		var tr_y = math.multiply(tr, yDataMat);
+		var theta = math.multiply( math.inv(tr_X), tr_y );
+		yhat = math.multiply(xDataMat,theta)
+		//console.log	(yhat)
+		//console.log	(theta)
+		result = {
+			model:theta.valueOf(),
+			yhat:yhat.valueOf()
+		}
+		return result
+    }	
+
+	// ================== MAIN CODE ==================
+	var simar = [0.1,0.2,0.3,0.4];
+	var data = {
+		x:[0.1,0.2,0.3,0.4],
+		y:[0.2,0.3,0.5,0.6]
+	};
+	w = [100,3,5] // slope
+	x = linspace(0,20,0.1)
+	nf = 1000 // noise factor
+	model_degree = 1
+	data = generateData(x,w,nf) // gives data as array of dict{x,y}
+	//data_r = transformDataReg(data, model_degree)	// gives data as arrays of array [x,y]
+	//rResult = fitData(data_r)
+	rResult = fitDataClosedForm(data, model_degree)
+
+	//console.log(transformData(data));
+	tData = transformData(data);
+	rData = transformData({x:data.x, y:rResult.yhat});
+
+	var margin = {top:20, right:20, bottom:30, left:40}
+		width = 960 - margin.left - margin.right
+		height = 500 - margin.top - margin.bottom;
+
+	var x = d3.scale.linear()
+		.domain([0, d3.max(data.x)])
+		.range([0, width]);
+
+	var y = d3.scale.linear()
+		.domain([0, d3.max(data.y)])
+		.range([height, 0]);
+
+	var color = d3.scale.category10();;
+
+	var xAxis = d3.svg.axis()
+		.scale(x)
+		.orient("bottom");
+
+	var yAxis = d3.svg.axis()
+		.scale(y)
+		.orient("left");
+
+	var svg = d3.select("#simar").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	
+	//x.domain(d3.extent(data, function(d) { return d.dim1; })).nice();
+  	//y.domain(d3.extent(data, function(d) { return d.dim2; })).nice();
+
+	//x.domain(d3.extent(data, function(d) { return d.dim1; })).nice();
+  	//y.domain(d3.extent(data, function(d) { return d.dim2; })).nice();
+
+	svg.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxis)
+		.append("text")
+			.attr("class","label")
+			.attr("x", width)
+			.attr("y", -6)
+			.style("text-anchor", "end")
+			.text("x axis");
+
+	svg.append("g")
+		.attr("class", "y axis")
+		.call(yAxis)
+		.append("text")
+			.attr("class","label")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 6)
+			.attr("dy", ".71em")
+			.style("text-anchor", "end")
+			.text("y axis");
+
+	svg.append("g")
+		.selectAll(".dot")
+			.data(tData)
+			.enter().append("circle")
+			.attr("class","dot")
+			.attr("r", 3.5)
+			.attr("cx", function(d) {return x(d.x);})
+			.attr("cy", function(d) {return y(d.y);})
+			.style("fill", function(d) { return color("Data Points"); });
+
+	svg.append("g")
+		.selectAll(".dot")
+			.data(rData)
+			.enter().append("circle")
+			.attr("class","dot")
+			.attr("r", 3.5)
+			.attr("cx", function(d) {return x(d.x);})
+			.attr("cy", function(d) {return y(d.y);})
+			.style("fill", function(d) { return color("Regression line"); });
+
+	var legend = svg.selectAll(".legend")
+		.data(color.domain())
+	.enter().append("g")
+		.attr("class","legend")
+		.attr("transform",function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", 0 + 60)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  legend.append("text")
+      .attr("x", 0 + 60+ 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "start")
+      .text(function(d) { return d; });	
+	
+
+/*
+todos
+- Add equation of line in legend
+- integrate quick angular
+- add slides
+-- generating data degree
+-- noise
+-- fitting polynomial
+- how much graph to visualize?
+-- may be add sliders
+- integrate bootstrap - https://getbootstrap.com/docs/3.3/components/#responsive-embed
+*/
+
+
+
+</script>
