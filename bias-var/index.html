@@ -3,7 +3,11 @@
 
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-blue.min.css" />
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 <link rel="stylesheet" href="styles.css">
+
 <body>
 <div class="jumbotron text-center">
   <h2 class="jumbotext">Polynomial regression<font size="3">(<a style="color:#e7298a" target="_blank" href="https://en.wikipedia.org/wiki/Polynomial_regression">?</a>)</font> bias-variance tradeoff<font size="3">(<a style="color:#e7298a" target="_blank" href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">?</a>)</font> playground</h2>
@@ -11,10 +15,10 @@
 </div>
 <div class="container-fluid">
   <div class="row">
-    <div style="position:relative; left:40px;" class="col-sm-2">
-    	<div style="margin-bottom:30px">
+    <div style="position:relative; left:80px;" class="col-sm-2">
+    	<div style="margin-bottom:30px; margin-top:40px;">
 	    	<h4>DATASET</h4>
-	    	<p>Which dataset you want to use?</p>
+	    	<p style="font:15px;">Which dataset you want to use?</p>
 	        <div class="dataset-list">
 	          <div class="dataset" title="Circle">
 	            <img id="DS_a" src="images/a.png" class="data-thumbnail selected"></canvas>
@@ -26,25 +30,27 @@
 	            <img id="DS_c" src="images/c.png" class="data-thumbnail"></canvas>
 	          </div>
 	        </div>	    	
+
 			<!--div class="btn-group">
 			  <button type="button" id="data_1" class="btn btn-default">Linear</button>
 			  <button type="button" id="data_2" class="btn btn-default">Cmplx</button>
 			  <button type="button" id="data_3" class="btn btn-default">Cmplx</button>
 			</div-->
     	</div>
+
     	<div>
-	    	<h4>DEGREE</h4>
-	    	<p>What polynomial basis you want to use</p>
-			<div class="btn-group">
+	    	<h4 id ="poly_text">POLYNOMIAL DEGREE (p)</h4>
+		    	<p style="font:15px;">What degree basis you want to fit?</p>
+	            <input id="polydegree" class="mdl-slider mdl-js-slider" type="range" min="1" max="4" step="1" value="2" tabindex="0"> 
+
+			<!--div class="btn-group">
 			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(1);">1</button>
 			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(2);">2</button>
 			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(3);">3</button>
 			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(4);">4</button>
 			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(5);">5</button>
 			  <button type="button" class="btn btn-default" onclick="learnDrawCurve(6);">6</button>
-			</div>
-			<button type="button" class="btn btn-default" onclick="showBigPicture()">Big pic</button>
-			<button type="button" class="btn btn-default" onclick="showActualPicture()">Actual pic</button>
+			</div-->
 
     	</div>
 		<br><br><br>
@@ -58,7 +64,14 @@
 
     </div>
     <div class="col-sm-5">
-    	<div style="position:relative; left:82px;" id ="plot-1">
+    	<div style="position:relative; left:82px;margin-top:30px;" id ="plot-1">
+    		<div style="position:absolute;top:250px; left:520px">
+				<!--button type="button" class="btn btn-default" onclick="showBigPicture()">Big pic</button>
+				<button type="button" class="btn btn-default" onclick="showActualPicture()">Actual pic</button-->
+
+				<span id="zoom" class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
+			</div>
+
     	</div>
     </div>
     <div class="col-sm-5">
@@ -103,17 +116,17 @@
 	var view = 0;
 
 	// Setup d3
-	WIDTH = 560
-	HEIGHT = 350
-	var margin = {top:20, right:20, bottom:30, left:50}
-		width = WIDTH - margin.left - margin.right
-		height = HEIGHT - margin.top - margin.bottom;
+	WIDTH_curve = 590
+	HEIGHT_curve = 350
+	var margin_curve = {top:20, right:20, bottom:30, left:80}
+		width_curve = WIDTH_curve - margin.left - margin.right
+		height_curve = HEIGHT_curve - margin.top - margin.bottom;
 
 	var svg = d3.select("#plot-1").append("svg")
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
+		.attr("width", width_curve + margin_curve.left + margin_curve.right)
+		.attr("height", height_curve + margin_curve.top + margin_curve.bottom)
 		.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			.attr("transform", "translate(" + margin_curve.left + "," + margin_curve.top + ")");
 
 	var svg_data = svg.append("g").attr("class", "svg_data")
 	var svg_curve = svg.append("g").attr("class", "svg_curve")

@@ -88,11 +88,14 @@ function generateBiasVarData(){
     bar_data.splice(0,1)
   }
 
-    bar_data.push({
-    'model':'Degree ' + model_degree,
-    'bias':Math.round(avg_bias),
-    'variance':Math.round(avg_var)
-    })
+  console.log(bar_data)
+  var name_t = find_name(bar_data, model_degree)
+
+  bar_data.push({
+  'model':name_t,
+  'bias':Math.round(avg_bias),
+  'variance':Math.round(avg_var)
+  })
 
   reDrawBars()
 
@@ -121,6 +124,17 @@ function generateBiasVarData(){
   console.log("Variance (var) -> " + stats2[1])
   console.log("Mean (bias) -> " + avg_bias)
   console.log("Variance (var) -> " + avg_var)
+}
+
+function find_name(bar_a,b) {
+  var pr_name = 'Degree ' + model_degree
+  for (var i=0;i<bar_a.length;i++) {
+    if (pr_name == bar_a[i].model){
+      pr_name = pr_name + '\''
+      i=0
+    }
+  }
+  return pr_name
 }
 
 function computeMeanStd(errors){
@@ -219,7 +233,7 @@ function scaleVariance(avg_var){
 
     b_data_new.push(errors_simar)
   }
-  console.log(new_vars)
+  //console.log(new_vars)
   b_data_scaled = b_data_new
 }
 

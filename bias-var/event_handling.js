@@ -36,3 +36,19 @@ $("#DS_b").click(function() {
 	clearBars()
 	drawData(data);
 });
+
+$("#zoom").hover(function(){
+	//this.font-size = 25px;
+	showBigPicture()
+},function(){
+	showActualPicture()	
+});
+
+
+// we can capture events d3 way as well!!
+d3.select('#polydegree').on('change', function() {
+    console.log("NEW P", this.value)
+    var new_text = 'POLYNOMIAL DEGREE (' + this.value + ')'
+    $('#poly_text').text(new_text)
+    learnDrawCurve(this.value)
+})

@@ -2,11 +2,11 @@
 function drawXY(x_min, x_max, y_min, y_max) {
 	scale_x = d3.scale.linear()
 		.domain([x_min, x_max])
-		.range([0, width]);
+		.range([0, width_curve]);
 
 	scale_y = d3.scale.linear()
 		.domain([y_min, y_max])
-		.range([height, 0]);
+		.range([height_curve, 0]);
 
 	var xAxis = d3.svg.axis()
 		.scale(scale_x)
@@ -16,11 +16,11 @@ function drawXY(x_min, x_max, y_min, y_max) {
 		.scale(scale_y)
 		.orient("left");
 
-	x_axis.attr("transform", "translate(0," + height + ")")
+	x_axis.attr("transform", "translate(0," + height_curve + ")")
 		.call(xAxis)
 		.append("text")
 			.attr("class","label_chart")
-			.attr("x", width)
+			.attr("x", width_curve)
 			.attr("y", -6)
 			.style("text-anchor", "end")
 			.text("x axis");
