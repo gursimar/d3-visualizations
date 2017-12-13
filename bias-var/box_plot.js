@@ -20,13 +20,21 @@
   var min = 100000//d3.min(errors)
   var max = 0//d3.max(errors)
   d3.select("#plot-2").append("g")
+  
+  /*
+  d3.select("#plot-2").append("svg")
+    .attr("width", width_curve + margin_curve.left + margin_curve.right)
+    .attr("height", height_curve + margin_curve.top + margin_curve.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin_curve.left + "," + margin_curve.top + ")");
+*/
+  
 
 
 function reDrawBoxes() {
-
   d3.select("#plot-2").selectAll("svg").remove();
   chart.domain([min, max]); // CHECK THIS
-  var svg = d3.select("#plot-2").selectAll("g").selectAll("svg")
+  var svg = d3.select("#plot-2").select("g").selectAll("svg")
       .data(b_data_scaled)
       .enter().append("svg")
       .attr("class", "box")
@@ -36,31 +44,11 @@ function reDrawBoxes() {
       .attr("transform", "translate(" + b_margin.left + "," + b_margin.top + ")")
       .call(chart);
 
-//  var x_axis = svg.append("g").attr("class", "x axis")
-  /*
-  var y_axis = d3.select("#plot-2").select("g").append("g").attr("class", "y axis")
+//drawAxis()
   
 
-  scale_y = d3.scale.linear()
-    .domain([min, max])
-    .range([b_height, 0]);
-
-  var yAxis = d3.svg.axis()
-    .scale(scale_y)
-    .orient("left");
-
-
-  y_axis.call(yAxis)
-    .append("text")
-      .attr("class","label_chart")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Dependent variable (y)");
-    */
-
 /*
+  var x_axis = svg.append("g").attr("class", "x axis")
   scale_x = d3.scale.linear()
     .domain([x_min, x_max])
     .range([0, width_curve]);

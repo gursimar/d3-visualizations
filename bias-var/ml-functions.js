@@ -148,7 +148,6 @@ function leastSquaresGradient(X,y,theta){
 	// https://www.robinwieruch.de/linear-algebra-matrix-javascript/
 	// This link has simple idea to code the gradient
 	// Then I will have to modify the above GD function
-
 }
 
 function transformDataReg(data,n){

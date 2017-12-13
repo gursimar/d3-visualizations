@@ -20,7 +20,7 @@
 </div>
 
   <div style="margin-top:-20px" class="row">
-    <div style="position:relative; left:80px;" class="col-sm-2" data-step="9" data-intro='Tinker with these parameters and see how bias/ variance tardeoff changes.'>
+    <div style="position:relative; left:60px;" class="col-sm-2" data-step="10" data-intro='Tinker with these parameters and see how bias/ variance tardeoff changes.'>
     	<div style="margin-bottom:30px; margin-top:20px;" data-step="1" data-intro='Start by choose a dataset here!'>
 	    	<h4>DATASET</h4>
 	    	<p style="font:15px;">Which dataset you want to use?</p>
@@ -44,9 +44,9 @@
     	</div>
     	<div data-step="5" data-intro='Similarly try different values of noise and concentration and observe how the regression model behaves. Again, you can use the zoom button to see the big picture.'>
 	    	<div>
-		    	<h4 id ="sample_text">Concentration (200)</h4>
+		    	<h4 id ="sample_text">Concentration (50)</h4>
 			    	<p style="font:15px;">Amount of data to sample?</p>
-		            <input id="sampledegree" class="mdl-slider mdl-js-slider" type="range" min="50" max="500" step="150" value="200" tabindex="0"> 
+		            <input id="sampledegree" class="mdl-slider mdl-js-slider" type="range" min="50" max="500" step="150" value="50" tabindex="0"> 
 	    	</div>
 
 	    	<div>
@@ -56,9 +56,9 @@
 	    	</div>
     	</div>
     	<br>
-    	<div style="margin-top:50px" data-step="3" data-intro='You can choose the degree of polynomial which fits the data using this slider. If you data is more complex, you should choose a high degree polynomial to correctly model it. However, high degree polynomails are also prone to overfitting.'>
-	    	<h4 id ="poly_text">POLYNOMIAL DEGREE (4)</h4>
-		    	<p style="font:15px;">What degree basis you want to fit?</p>
+    	<div style="margin-top:50px" data-step="3" data-intro='Choose what degree polynomial you want to fit the data. If your data is more complex, you should choose a high degree polynomial to correctly model it. However, keep in mind that high degree polynomials are prone to overfitting.'>
+	    	<h4 id ="poly_text">POLYNOMIAL DEG (4)</h4>
+		    	<p style="font:15px;">What degree basis to fit?</p>
 	            <input id="polydegree" class="mdl-slider mdl-js-slider" type="range" min="1" max="4" step="1" value="4" tabindex="0"> 
 
 			<!--div class="btn-group">
@@ -81,19 +81,19 @@
 
     </div>
     <div class="col-sm-5">
-    	<div style="position:relative; left:82px;margin-top:25px;" id ="plot-1" data-step="2" data-intro='The sampled data is displayed in this scatter plot. Also, it fits a regression line with polynomail basis of degree (p).'>
-    		<div style="position:absolute;top:250px; left:520px" data-step="4" data-intro='Hover on this to see how your model perform on data points it did not see while training. You will observe that a high degree polynomial overfits the data.'>
+    	<div style="position:relative; left:50px;margin-top:25px;" id ="plot-1" data-step="2" data-intro='The sampled data is displayed in this scatter plot. Also, it fits a regression line with polynomial basis of degree (p).'>
+    		<div style="position:absolute;top:250px; left:520px" data-step="4" data-intro='Hover on this button to see the performance of your model on data points not present in the traning set.'>
 				<!--button type="button" class="btn btn-default" onclick="showBigPicture()">Big pic</button>
 				<button type="button" class="btn btn-default" onclick="showActualPicture()">Actual pic</button-->
 				<span id="zoom" class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
 			</div>
-			<div  style="position:absolute;top:350px;left:80px;width:75%;text-align:justify;font-size:16px">
-				The scatter plot at the top represent one instance of sampled data and regression line which fits it.
-				The plots on the right (box and bar) is constructed by repeatedly sampling data and fitting regression lines. The box plot on the top-right shows the distribution of residuals. The bar chart on the right represent the bias and variance of residuals. Each bar/ box corresponds to a particular degree of regression line (shown on x-axis).<br><br>Steps:
+			<div  style="position:absolute;top:350px;left:80px;width:80%;text-align:justify;font-size:15px">
+				The scatter plot at the top represents one instance of sampled data and regression line which fits it.
+				The plots on the right (box and bar) is constructed by repeatedly sampling data and fitting regression lines. The box plot on the top-right shows the distribution of residuals. The bar chart on the right represents the bias and variance of residuals. Each bar/ box corresponds to a particular degree of the regression line (shown on the x-axis).<br><br>Steps:
 				<ul style="font-size:14px;margin-top:10px">
 					<li>Choose a dataset from the pane on the left.</li>
 					<li>Analyze bias-variance tradeoff by changing data/ noise/ samples.</li>
-					<li>Investiage different fits by changing degree of polynomial.</li>
+					<li>Investigate different fits by changing the degree of the polynomial.</li>
 					<li>Use the zoom-out symbol to see generalizability of your model</li>
 				</ul>
 
@@ -101,37 +101,38 @@
 
     	</div>
     </div>
-    <div class="col-sm-5" data-step="6" data-intro='These graph are computed by sampling data and fitting regression lines. When you do this, each time you get a different model due to noise in data. These plots are obtained by aggregating the data obtained in multiple runs.'>
-    	<div style="position:relative; left:65px;" id ="plot-2" data-step="7" data-intro='This plot is obtained by plotting the distribution of residuals. Each bar corresponds to a different degree of polynomail. Various stats on the bar is shown like median, inter-quatile-range. Observe that as you increase the polynomial degree, the median of bar goes down and the spread increases. These two things roughly corresponds to bias and variance.'>
+    <div class="col-sm-5" data-step="7" data-intro='These graph are computed by repeatedly sampling data and fitting regression lines. Due to noise each time you might get a different model. These plots are obtained by computing stats on data obtained in multiple runs. Read discussion below for more details'>
+    	<div style="position:relative; left:65px;" id ="plot-2" data-step="8" data-intro='This plot is obtained by plotting the distribution of residuals. Each bar corresponds to a different degree of polynomial. Various stats like median, quartiles are shown. Observe that as you increase the polynomial degree, the median of the bar goes down and the spread increases. These two signals roughly corresponds to bias and variance.'>
     	</div>
     	<br>
-    	<div style="margin-top:-20px; margin-left:20px;" id ="plot-3" data-step="8" data-intro='Here we plot the bias and variance against the polynomail degree. Observe that as the polynomial degree increases, bias reduces and variance increases. Hence the tradeoff!!'>
+    	<div style="margin-top:-20px; margin-left:20px;" id ="plot-3" data-step="9" data-intro='Here we plot the actual bias and variance against the polynomial degree. Observe that as the polynomial degree increases, bias reduces and variance increases. Hence the tradeoff!!'>
     	</div>
     </div>
   </div>
+  <br>
+  <br>
   <div class="row">
     <div class="col-sm-3">
     </div>
     <div style="margin-left:-20px" class="col-sm-6">
       <h3>Discussion</h3>
-      <h5 class="question">What is polynomail regression?</h5>
-      <p class="answer">Linear regression is a technique for modeling a dependent variable (y) as a linear combination of one or more independent variables x<sup>(i)</sup>). Polynomial regression allows us to capture non-linear relationships between X and y using a change of basis (z<sup>(i)</sup>=f(x<sup>(i)</sup>)). In a nutshell, instead of a line, it allows us to fit a n<sup>th</sup> degree polynomail to the data. Read more [<a href="https://en.wikipedia.org/wiki/Polynomial_regression">link</a>].</p>
+      <h5 class="question">What is polynomial regression?</h5>
+      <p class="answer">Linear regression is a technique for modeling a dependent variable (y) as a linear combination of one or more independent variables x<sup>(i)</sup>). Polynomial regression allows us to capture non-linear relationships between X and y using a change of basis (z<sup>(i)</sup>=f(x<sup>(i)</sup>)). In a nutshell, instead of a line, it allows us to fit a n<sup>th</sup> degree polynomial to the data. Read more [<a href="https://en.wikipedia.org/wiki/Polynomial_regression">link</a>].</p>
       <h5 class="question">What is the aim of this playground?</h5>
-      <p class="answer">Tinker with different values of parameters p, noise, amount of sampling. Each values of the parameters result in a different model in the bias-variance tradeoff landscape. The aim is to demonstrate the fundamental tradeoff, relate it with the concept of overfitting/ underfitting and generalization error.</p>
-      <h5 class="question">What is bias and variance? How do you compute it?</h5>
-      <p class="answer">Imagine, we can rebuild different models by repeatedly sampling new data. Due to noise, we may end up with a slightly different model. The bias corresponds to the expected value of (say, a particular prediction corresponding to a particular data point in the sample) and its true value. The variance corresponds to the spread of these predictions. Read more [<a href = "http://scott.fortmann-roe.com/docs/BiasVariance.html">link</a>]. We compute the bias and variance of the model by taking average of bias and variance of all data point in the sample.</p>
+      <p class="answer">Tinker with different values of parameters like polynomial degree (p), noise, and amount of sampling. Each value of the parameters result in a slightly different model in the bias-variance tradeoff landscape. The aim is to demonstrate the fundamental tradeoff, and relate it with overfitting/ underfitting and generalization error.</p>
+      <h5 class="question">What is the bias and variance? How do you compute it?</h5>
+      <p class="answer">Imagine, we can rebuild different models by repeatedly sampling new data. Due to noise, we may end up with a slightly different model. The bias for particular prediction corresponds to the difference between its expected value and its true value. The variance corresponds to the spread of these predictions. Read more [<a href = "http://scott.fortmann-roe.com/docs/BiasVariance.html">link</a>]. We compute the bias and variance of the whole model by averaging bias and variance of all data points in the dataset.</p>
       <h5 class="question">What is bias-variance tradeoff?</h5>
-      <p class="answer">The tradeoff is in the sense that when you tweak the model parameters (the value of degree of degree of polynomial in this case), decrease in one type of error leads to increase in the other and visa verse.</p>
+      <p class="answer">The tradeoff is in the sense that when you tweak the model parameters ( degree of polynomial in this case), a decrease in one type of error leads to increase in the other and visa verse.</p>
       <h5 class="question">Scatter plot; how to interpret it?</h5>
-      <p class="answer">The scatter plot represents a single snapshot of the data (show in blue dots). We fit a nth degree polynomail regression line to it (shown in pink).
-      <br><br>You can observe the bias variance tradeoff by clicking in the dataset icon repeatedly and observing that you get different model each time depending on noise. When this change is more, you have a model with high variance. On the other hand, if you choose a low degree polynomial which is a bad fit, you always get the same model. This means variance is low, however the bias is quite high.
-      <br><br>Notice this sample can in itself be biased in the sense that it only represents a small part of your distribution. This is happening the case of dataset 3. This can be observed using the zoom-out feature.</p>
+      <p class="answer">The scatter plot represents a single snapshot of the data (shown as blue dots). We fit an n<sup>th</sup> degree polynomial regression line to it (shown in pink).
+      <br><br>You can observe the bias-variance tradeoff by observing different fits for the same dataset. You get quite different models for a higher degree polynomial which means variance is high. While a low degree polynomial is low on variance as it ends up with the same fit everytime. On the other hand, a high degree polynomial closely fits more points, hence bias is low. While a low degree polynomial does not have this expressivity leading to high bias.</p>
       <h5 class="question">Box plot; how to interpret it?</h5>
-      <p class="answer">Box plot is generated by using different values of residuals (absolute difference between predictions of the model and its original value). Each bar corresponds to a different degree of polynomail. Notice that at the bar goes down, it suggets that errors are less (on average). Hence the bias of the model is low. Similarly, the height of the bar gives an idea of the spread of these residuals (and hence individual predictions), giving us an estimate of variance. These two things roughly corresponds to bias and variance of the model. Notice that as the model degree increases, the bars goes down (low bias) and also the height increases (high variance).</p>
+      <p class="answer">Box plot is generated by plotting the distribution of residuals (absolute difference between predictions of the model and its actual value). Each bar corresponds to a different degree of a polynomial. Notice, a bar close to bottom represents low residuals (on average). Hence, the bias of the model is low. On the other hand, the height of a bar gives an idea of the spread of residuals, giving us an estimate of variance. These two things roughly correspond to bias and variance of the model. Notice, as the model degree increases, the bars shifts downwards (low bias) and the height of bars increases (high variance).</p>
       <h5 class="question">Bar plot; how to interpret it?</h5>
-      <p class="answer">Bar chart is generated by computing the bias and variance of the model. Each bar corresponds to bias and variance of the model for a particular degree of polynomial. Notice, that as we go right (the model degree increases), the bias of the model decreases and the variance increases. On the other hand, if we go left (model degree decreases), the bias of the model increases and the variance decreases.</p>
+      <p class="answer">The bar chart is generated by computing the bias and variance of the model. Each bar corresponds to bias and variance of the model for a particular degree of the polynomial. Notice as you go right (increase in polynomial degree), the bias of the model decreases and the variance increases. On the other hand, if we go left (model degree decreases), the bias of the model increases and the variance decreases.</p>
       <h5 class="question">But, why did not you plot the bull's eye diagram?</h5>
-      <p class="answer">Bulls's eye diagram (proposed here [<a http://scott.fortmann-roe.com/docs/BiasVariance.html>link</a>]) though intuitive, is misleading and not very accurate. The bias and variance is a one dimentional quantity and plotting on 2D space causes confusion in the mind of the learner. Also, the model is inaccurate since the spread and distance from the bulls eye does not correspond to true values/ or even scaled values. Read our project report for more details [link (coming soon)].</p>
+      <p class="answer">We did the bulls-eye diagram as well in another demo [<a href="">link</a>]. The bulls's eye diagram (originally proposed here [<a http://scott.fortmann-roe.com/docs/BiasVariance.html>link</a>]) is intuitive but not very accurate and can be misleading. The bias and variance is really a one-dimentional quantity and plotting on 2D space causes confusion. Read our project report for more details [link (coming soon)].</p>
       <br><br>
     </div>
     <div class="col-sm-3">
@@ -156,7 +157,7 @@
 <script src="bar_plot.js"></script>
 
 <script>
-	var x = linspace(-7,10,0.085)
+	var x = linspace(-7,10,17/50)
 	var w = []
 	var w_all = [
 		[-5,50,1],
