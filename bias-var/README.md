@@ -12,5 +12,25 @@ bower install
 open index.html
 ```
 
+# Code
+```
+index.html - sets up the ui elements and js
+js/ - contains the main javascript code for the project
+js/bar_plot.js - conatins the code for bar plot
+js/bias-var.js - contains code for bias variance calculation (I tried a couple of implementations)
+js/box_plot.js - conatins the code for box plot
+js/line_plot.js - conatins code for scatter and line plot
+js/ml-functions.js - conatins code to generate data, fit models and predict
+js/event_handling.js - conatins code to control slides and other controls
+js/box.js - box plot library (taken form d3 site)
+I wrote all the code expect box.js
+
+css/ - contains the custom stylesheet for the project
+css/styles.css - constains the stylesheet for the website
+bower_componets/ - conatins libraries which I used in the project
+images/ - conatins images used for datasets buttons
+
+```
+
 ## Licence
 MIT
