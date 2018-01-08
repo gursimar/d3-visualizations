@@ -63,7 +63,7 @@ $("#help").click(function(){
 // we can capture events d3 way as well!!
 d3.select('#polydegree').on('change', function() {
     //console.log("NEW P", this.value)
-    var new_text = 'POLYNOMIAL DEGREE (' + this.value + ')'
+    var new_text = 'POLYNOMIAL DEG (' + this.value + ')'
     $('#poly_text').text(new_text)
     learnDrawCurve(this.value)
 })
